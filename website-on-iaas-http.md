@@ -112,12 +112,13 @@ ssh azureadmin@<public ip address>
   ![Screenshot](media/website-on-iaas-http/poc-?.png)
 
 # Install Apache on the VMs
-  * From the SSH terminal, execute the following instructions.
+From the SSH terminal, execute the following instructions on both servers.
 
   * Elevate privileges to root
   ```bash
   sudo su -
   ```
+
   * Install HTTP Server
   ```bash
   yum install httpd
@@ -138,55 +139,36 @@ ssh azureadmin@<public ip address>
   service httpd start
   ```
 
-
-
-  
-
-
-
-
-  
-
-   ![Screenshot](media/website-on-iaas-http/poc-9.png)
-
-  * From the **Server Manager Dashboard**, select **Add Roles and Features**
-
-   ![Screenshot](media/website-on-iaas-http/poc-10.png)
-
-  * Click **Next** on **Before you Begin**
-  * Click **Next** on **Installation Type**
-  * Click **Next** on **Server Selection**
-  * On **Server Roles**, select **Web Server IIS**
-  * On **Add Roles and Features** popup, click **Add Features**
-  * On **Server Roles**, click **Next**
-  * On **Features**, click **Next**
-  * On **Web Server Role(IIS)**, click **Next**
-  * On **Role Services**, click **Next**
-  * On  **Confirmation**, click **Install**
-
-  ![Screenshot](media/website-on-iaas-http/poc-11.png)
-
-  >Note: Wait for installation to complete
- 
-  * On  **Confirmation**, click **Close**
-  * Launch the **Internet Information Services (IIS) Manager** from the **Server Manager** tools menu
-  * In the **Connections** panel, drill down to **Sites**
-  * On **Default Web Site**, **Right-Click** and select **Switch to Content View**
-  * **Right-Click** anywhere in panel and select **Explore**
-  * From the **Windows Explorer**, **Right-Click** on the file **IISStart.html**, and open in **Notepad**.
-
-  ![Screenshot](media/website-on-iaas-http/poc-12.png)
-
-  * Find the follow line right after the <**body**> tag and add the following.
-
+ * Open firewall port for http
+  ```bash
+  firewall-cmd --zone=public --add-port=80/tcp --permanent
+  firewall-cmd --reload
   ```
-For VM1: <h1>This is Web Server 01</h1>
-For VM2: <h1>This is Web Server 02</h1>
-``` 
 
-  ![Screenshot](media/website-on-iaas-http/poc-13.png)
+ * Create a default page for each server
+  ```bash
+  cd /var/www/html
+  nano index.html
+  ```  
 
-  * From Virtual Machine blade, select the 2nd VM, click **Connect** and login to machine and repeat all the steps above.
+ * Write the following HTML in the file:
+  ```
+  For VM1: <h1>This is Web Server 01</h1>
+  For VM2: <h1>This is Web Server 02</h1>
+  ``` 
+
+ * CTRL+O to save and CTRL+Q to Quit 
+
+ * Test default website from the local server
+  ```bash
+  elinks http://localhost
+  ```  
+  * Press Q to quit elinks
+
+  ![Screenshot](media/website-on-iaas-http/poc-?.png)
+
+  
+  * Connect via ssh to the second machine and repeat all the steps above.
 
   ![Screenshot](media/website-on-iaas-http/poc-14.png)
 
