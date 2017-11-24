@@ -1,4 +1,4 @@
-# POC Scenario 1: Deploying Website on Azure IaaS VMs - HTTP
+# POC Scenario 1: Deploying Website on Azure IaaS VMs (Red Hat/Centos Linux) - HTTP
 
 ## Table of Contents
 * [Abstract](#abstract)
@@ -22,7 +22,7 @@
 
 # Abstract
 
-During this module, you will learn about bringing together all the infrastructure components to build a sample application and making it scalable, highly available and secure.
+During this module, you will learn about bringing together all the infrastructure components to build a sample Linux application and making it scalable, highly available and secure.
 
 # Learning objectives
 After completing the exercises in this module, you will be able to:
@@ -39,7 +39,7 @@ After completing the exercises in this module, you will be able to:
 * Be familiar with the fundamentals of Azure Compute
 
 # Estimated time to complete this module
-Self-guided
+2 hours
 
 # Customize your Azure Portal
 * Launch [Azure Portal](https://portal.azure.com/)
@@ -70,10 +70,11 @@ Self-guided
 
 # Virtual Machine Creation
   * Create 2 VMs
-  * Select from the marketplace, **Windows Server 2016 Datacenter**
+  * Select from the marketplace, **Red Hat Enterprise Linux 7.3**
   * Name the 1st VM **(prefix)-web01-vm**
   * Name the 2nd VM **(prefix)-web02-vm**
   * Make sure to choose **HDD disk**
+  * Choose password Authentication Type and make sure the user name is in lowercase o 
 
      ![Screenshot](media/website-on-iaas-http/poc-5.png)
 
@@ -90,9 +91,61 @@ Self-guided
 
    ![Screenshot](media/website-on-iaas-http/poc-7.png)
 
+  * After the Virtual machines are created, take note of the Public IP address for each Virtual Machine:
 
-# Install IIs on the VMs
-  * From the Virtual Machine blade, select the 1st VM, click **Connect** and login to machine
+  ![Screenshot](media/website-on-iaas-http/poc-?.png)
+
+# Connect to Virtual Machine
+
+* For Windows download [SSH Putty client](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
+
+* Open two instances of the putty client and connect to the servers
+
+  ![Screenshot](media/website-on-iaas-http/poc-?.png)
+
+* Click "Yes" on the putty security alert
+
+* For Linux or Mac just use the ssh command from the terminal
+```bash
+ssh azureadmin@<public ip address>
+```
+  ![Screenshot](media/website-on-iaas-http/poc-?.png)
+
+# Install Apache on the VMs
+  * From the SSH terminal, execute the following instructions.
+
+  * Elevate privileges to root
+  ```bash
+  sudo su -
+  ```
+  * Install HTTP Server
+  ```bash
+  yum install httpd
+  ```
+
+  * Install Command line browser for testing
+  ```bash
+  yum install elinks
+  ```
+
+ * Configure HTTP to automatic start
+  ```bash
+  chkconfig httpd on
+  ```
+
+ * Start HTTP Service
+  ```bash
+  service httpd start
+  ```
+
+
+
+  
+
+
+
+
+  
 
    ![Screenshot](media/website-on-iaas-http/poc-9.png)
 
