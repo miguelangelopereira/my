@@ -1,4 +1,4 @@
-# POC Scenario 1: Deploying Website on Azure IaaS VMs (Red Hat/Centos Linux) - HTTP
+# POC Scenario 1: Deploying Website on Azure IaaS VMs (Red Hat Enterprise Linux) - HTTP
 
 ## Table of Contents
 * [Abstract](#abstract)
@@ -76,7 +76,7 @@ After completing the exercises in this module, you will be able to:
   * Make sure to choose **HDD disk**
   * Choose password Authentication Type and make sure the user name is in lowercase o 
 
-     ![Screenshot](media/website-on-iaas-http/poc-5.png)
+    ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-1.png)
 
   * For the size select **D1_V2**
   
@@ -85,7 +85,7 @@ After completing the exercises in this module, you will be able to:
   * Below Storage select **Yes** to **Use managed disks**
   * Select the previously create Virtual Network and the Web subnet
   
-   ![Screenshot](media/website-on-iaas-http/poc-vm-settings-1.png)
+    ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-2.png)
 
   * Create a Diagnostics Storage account named **(prefix)webdiag**
 
