@@ -93,7 +93,7 @@ After completing the exercises in this module, you will be able to:
 
   * After the Virtual machines are created, take note of the Public IP address for each Virtual Machine:
 
-  ![Screenshot](media/website-on-iaas-http/poc-?.png)
+    ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-3.png)
 
 # Connect to Virtual Machine
 
@@ -101,7 +101,7 @@ After completing the exercises in this module, you will be able to:
 
 * Open two instances of the putty client and connect to the servers
 
-  ![Screenshot](media/website-on-iaas-http/poc-?.png)
+ ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-4.png)
 
 * Click "Yes" on the putty security alert
 
@@ -109,7 +109,7 @@ After completing the exercises in this module, you will be able to:
 ```bash
 ssh azureadmin@<public ip address>
 ```
-  ![Screenshot](media/website-on-iaas-http/poc-?.png)
+ ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-5.png)
 
 # Install Apache on the VMs
 From the SSH terminal, execute the following instructions on both servers.
@@ -165,12 +165,12 @@ From the SSH terminal, execute the following instructions on both servers.
   ```  
   * Press Q to quit elinks
 
-  ![Screenshot](media/website-on-iaas-http/poc-?.png)
+  ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-6.png)
 
   
   * Connect via ssh to the second machine and repeat all the steps above.
 
-  ![Screenshot](media/website-on-iaas-http/poc-14.png)
+  ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-7.png)
 
 # Load Balancer Creation
   * From the left panel on the Azure Portal, select **Load balancers**.
@@ -279,7 +279,7 @@ From the SSH terminal, execute the following instructions on both servers.
   * You will see the IIS server default page showing either Web Server 01 or 02.
   * If you see Web Server 01, then RDP into VM1, stop the Default Web Site in IIS. Refresh the web page, you will see Web Server 02. The Load balancer detects VM1 is down and redirects traffic to VM2.
 
-   ![Screenshot](media/website-on-iaas-http/poc-28.png)
+   ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-7.png)
 
 # Automation Scripts (ARM Template)
   * From the left panel on the Azure Portal, select **Resource Groups**.
