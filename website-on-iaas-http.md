@@ -74,7 +74,7 @@ After completing the exercises in this module, you will be able to:
   * Name the 1st VM **(prefix)-web01-vm**
   * Name the 2nd VM **(prefix)-web02-vm**
   * Make sure to choose **HDD disk**
-  * Choose password Authentication Type and make sure the user name is in lowercase o 
+  * Choose password Authentication Type and make sure the user name is in lowercase only
 
     ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-1.png)
 
