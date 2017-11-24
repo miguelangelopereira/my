@@ -64,9 +64,9 @@ After completing the exercises in this module, you will be able to:
 
    ![Screenshot](media/website-on-iaas-http/poc-3.png)
 
-  * Create a Subnet named **(prefix)-app-snet**
+  * Create a Subnet named **(prefix)-db-snet**
 
-   ![Screenshot](media/website-on-iaas-http/poc-4.png)
+   ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-9.png)
 
 # Virtual Machine Creation
   * Create 2 VMs
