@@ -125,7 +125,7 @@ From the SSH terminal, execute the following instructions on both servers.
   yum install httpd
   ```
 
-  * Install Command line browser for testing
+  * Install elinks terminal browser for testing
   ```bash
   yum install elinks
   ```
@@ -164,14 +164,12 @@ From the SSH terminal, execute the following instructions on both servers.
   ```bash
   elinks http://localhost
   ```  
+  ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-7.png)
+
   * Press Q to quit elinks
-
-  ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-6.png)
-
-  
   * Connect via ssh to the second machine and repeat all the steps above.
 
-  ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-7.png)
+
 
 # Load Balancer Creation
   * From the left panel on the Azure Portal, select **Load balancers**.
@@ -280,7 +278,7 @@ From the SSH terminal, execute the following instructions on both servers.
   * You will see the IIS server default page showing either Web Server 01 or 02.
   * If you see Web Server 01, then RDP into VM1, stop the Default Web Site in IIS. Refresh the web page, you will see Web Server 02. The Load balancer detects VM1 is down and redirects traffic to VM2.
 
-   ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-7.png)
+   ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-8.png)
 
 # Automation Scripts (ARM Template)
   * From the left panel on the Azure Portal, select **Resource Groups**.
