@@ -104,12 +104,13 @@ After completing the exercises in this module, you will be able to:
  ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-4.png)
 
 * Click "Yes" on the putty security alert
+ ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-5.png)
 
 * For Linux or Mac just use the ssh command from the terminal
 ```bash
 ssh azureadmin@<public ip address>
 ```
- ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-5.png)
+ ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-6.png)
 
 # Install Apache on the VMs
 From the SSH terminal, execute the following instructions on both servers.
