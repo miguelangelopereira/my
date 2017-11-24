@@ -275,8 +275,12 @@ From the SSH terminal, execute the following instructions on both servers.
 
 # Testing 
   * Browse to the load balancer public IP or **http://(prefix).westus2.cloudapp.azure.com/**
-  * You will see the IIS server default page showing either Web Server 01 or 02.
-  * If you see Web Server 01, then RDP into VM1, stop the Default Web Site in IIS. Refresh the web page, you will see Web Server 02. The Load balancer detects VM1 is down and redirects traffic to VM2.
+  * You will see the Web server default page showing either Web Server 01 or 02.
+  * If you see Web Server 01, then SSH into VM1, stop the httpd server
+  ```bash
+  service httpd stop
+  ```
+  * Refresh the web page, you will see Web Server 02. The Load balancer detects VM1 is down and redirects traffic to VM2.
 
    ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-8.png)
 
