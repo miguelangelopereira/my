@@ -132,12 +132,12 @@ From the SSH terminal, execute the following instructions on both servers.
 
  * Configure HTTP to automatic start
   ```bash
-  chkconfig httpd on
+  systemctl enable httpd.service
   ```
 
  * Start HTTP Service
   ```bash
-  service httpd start
+  systemctl start httpd.service
   ```
 
  * Open firewall port for http
@@ -278,7 +278,7 @@ From the SSH terminal, execute the following instructions on both servers.
   * You will see the Web server default page showing either Web Server 01 or 02.
   * If you see Web Server 01, then SSH into VM1, stop the httpd server
   ```bash
-  service httpd stop
+  systemctl stop httpd.service
   ```
   * Refresh the web page, you will see Web Server 02. The Load balancer detects VM1 is down and redirects traffic to VM2.
 
