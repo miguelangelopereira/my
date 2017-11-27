@@ -1,4 +1,4 @@
-# POC Scenario 1: Deploying Website on Azure IaaS VMs (Red Hat Enterprise Linux) - HTTP
+# POC Scenario 1: Deploying Wordpress on Azure IaaS VMs (Red Hat Enterprise Linux) - HTTP
 
 ## Table of Contents
 * [Abstract](#abstract)
@@ -23,57 +23,28 @@
 
 # Abstract
 
-During this module, you will learn about bringing together all the infrastructure components to build a sample Linux application and making it scalable, highly available and secure.
+During this module, you will learn about bringing together all the infrastructure components to build a Wordpress Website running on Linux and making it scalable, highly available and secure.
+
+![Screenshot](media/website-on-iaas-http-linux/wordpressdiagram-1.png)
 
 # Learning objectives
 After completing the exercises in this module, you will be able to:
-* Create a Resource Group
-* Create a Virtual Network
-* Create multiple virtual machines
-* Create and setup a load balancer
-* Create an availability set for VMs
-* Update Network Security Groups(NSG)
-* Deploy a website
+* TBD
 
 # Prerequisites 
-* Be familiar with the fundamentals of Azure Storage
-* Be familiar with the fundamentals of Azure Compute
+* Complete the "Deploying Website on Azure IaaS VMs (Red Hat Enterprise Linux) - HTTP" as this scenario starts from the completed infrastructure configured on that PoC
+
+[Deploying Website on Azure IaaS VMs (Red Hat Enterprise Linux)](https://tbd/)
+
 
 # Estimated time to complete this module
-2 hours
-
-# Customize your Azure Portal
-* Launch [Azure Portal](https://portal.azure.com/)
-* On left most panel, scroll to bottom, then click **More Services**
-* Find and Pin, **Virtual networks**
-* Find and Pin, **Availability sets**
-* Find and Pin, **Load balancers**
-* Find and Pin, **Network security groups**
-
-   ![Screenshot](media/website-on-iaas-http/poc-1.png)
-
-# Resource Group creation
-  > Note: For all **(prefix)** references, use a globally unique name to be used throughout this walkthrough.
-
-  * Create a Resource Group named **(prefix)-poc-rg**
-
-   ![Screenshot](media/website-on-iaas-http/poc-2.png)
-
-# Virtual Network Creation
-  * Create a VNET named **(prefix)-usw2-vnet**
-  * Create a Subnet named **(prefix)-web-snet**
-
-   ![Screenshot](media/website-on-iaas-http/poc-3.png)
-
-  * Create a Subnet named **(prefix)-db-snet**
-
-   ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-9.png)
+1 hour
 
 # Virtual Machine Creation
-  * Create 2 VMs
+  * Create 2 VMs for the database
   * Select from the marketplace, **Red Hat Enterprise Linux 7.3**
-  * Name the 1st VM **(prefix)-web01-vm**
-  * Name the 2nd VM **(prefix)-web02-vm**
+  * Name the 1st VM **(prefix)-db01-vm**
+  * Name the 2nd VM **(prefix)-db02-vm**
   * Make sure to choose **HDD disk**
   * Choose password Authentication Type and make sure the user name is in lowercase only
 
@@ -81,14 +52,14 @@ After completing the exercises in this module, you will be able to:
 
   * For the size select **D1_V2**
   
-  * Create an availability set named **(prefix)-web-as**
+  * Create an availability set named **(prefix)-db-as**
   > Note: During the 2nd VM creation pick the previously created Availability set  
   * Below Storage select **Yes** to **Use managed disks**
   * Select the previously create Virtual Network and the Web subnet
   
     ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-2.png)
 
-  * Create a Diagnostics Storage account named **(prefix)webdiag**
+  * Create a Diagnostics Storage account named **(prefix)dbdiag**
 
    ![Screenshot](media/website-on-iaas-http/poc-7.png)
 
@@ -113,7 +84,7 @@ ssh azureadmin@<public ip address>
 ```
  ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-6.png)
 
-# Install httpd on the VMs
+# Install MariaDB and Galera Cluster on the VMs
 From the SSH terminal, execute the following instructions on both servers.
 
   * Elevate privileges to root
@@ -121,9 +92,9 @@ From the SSH terminal, execute the following instructions on both servers.
   sudo su -
   ```
 
-  * Install HTTP Server
+  * Install MariaDB and Galera Cluster
   ```bash
-  yum install httpd
+  yum install rh-mariadb101-mariadb-server-galera 
   ```
 
   * Install elinks terminal browser for testing
@@ -131,45 +102,67 @@ From the SSH terminal, execute the following instructions on both servers.
   yum install elinks
   ```
 
- * Configure HTTP to automatic start
+ * Open Galera configuration file
   ```bash
-  systemctl enable httpd.service
+  nano /etc/opt/rh/rh-mariadb101/my.cnf.d/galera.cnf
   ```
 
- * Start HTTP Service
+ * Change wsrep_cluster_address with the Database Server IPs
   ```bash
-  systemctl start httpd.service
+  wsrep_cluster_address="gcomm://10.0.1.4,10.0.1.5"
   ```
 
- * Open firewall port for http
+ * Enable MariaDb service
   ```bash
-  firewall-cmd --zone=public --add-port=80/tcp --permanent
-  firewall-cmd --reload
+ scl enable rh-mariadb101 galera_new_cluster
   ```
 
- * Create a default page for each server
+ * Start MariaDB service
   ```bash
-  cd /var/www/html
-  nano index.html
+  systemctl start rh-mariadb101-mariadb.service
   ```  
 
- * Write the following HTML in the file:
-  ```
-  For VM1: <h1>This is Web Server 01</h1>
-  For VM2: <h1>This is Web Server 02</h1>
+ * Create Firewall exceptions:
+  ```bash
+ firewall-cmd --zone=public --add-port=3306/tcp --permanent
+firewall-cmd --zone=public --add-port=4567/tcp --permanent
+firewall-cmd --zone=public --add-port=4568/tcp --permanent
+firewall-cmd --zone=public --add-port=4444/tcp --permanent
+firewall-cmd --reload
   ``` 
 
- * CTRL+O to save and CTRL+Q to Quit 
+ * Open mysql locally (first server only)
+ ```bash
+ mysql
+ ```
 
- * Test default website from the local server
-  ```bash
-  elinks http://localhost
-  ```  
-  ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-7.png)
+* Change root default password
+```sql
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('<New Password>');
+```
 
-  * Press Q to quit elinks
-  * Connect via ssh to the second machine and repeat all the steps above.
+* Create a new user for remote connection and grand privileges
+```sql
+CREATE USER 'ftdemodbuser'@'%' IDENTIFIED BY '<New Password>';
+GRANT ALL PRIVILEGES ON *.* TO 'maria'@'%' WITH GRANT OPTION;
+```
 
+ # Add data disk to Web Servers
+  * Open the Azure Portal
+  * Select the First Web Server
+  * Select Disks
+  * Select "+Add Data Disks"
+  * Create a new Managed Disk with 32 Gb with Standard tier
+
+  ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-17.png)
+
+  * Connect to the server via SSH
+  * Initialize the data disk using the following procedure:
+  
+  [Initialize Data Disk](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-linux)
+
+  * You can mount the new disk in /datadrive
+  * Repeat the steps in the second server
 
 
 # Load Balancer Creation
