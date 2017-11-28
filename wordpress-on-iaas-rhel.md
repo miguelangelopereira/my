@@ -153,7 +153,7 @@ CREATE USER 'ftdemodbuser'@'%' IDENTIFIED BY '<New Password>';
 GRANT ALL PRIVILEGES ON *.* TO 'ftdemodbuser'@'%' WITH GRANT OPTION;
 ```
 
-# Load Balancer Creation (ongoing)
+# Load Balancer Creation
   * From the left panel on the Azure Portal, select **Load balancers**.
   * Click on **Add**
   * Name: **(prefix)-db-lb**

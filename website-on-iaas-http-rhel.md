@@ -35,14 +35,14 @@ After completing the exercises in this module, you will be able to:
 * Create and setup a load balancer
 * Create an availability set for VMs
 * Update Network Security Groups(NSG)
-* Deploy a website
+* Deploy a website in Linux
 
 # Prerequisites 
 * Be familiar with the fundamentals of Azure Storage
 * Be familiar with the fundamentals of Azure Compute
 
 # Estimated time to complete this module
-2 hours
+1.5 hours
 
 # Customize your Azure Portal
 * Launch [Azure Portal](https://portal.azure.com/)
