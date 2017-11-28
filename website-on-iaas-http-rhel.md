@@ -151,18 +151,16 @@ From the SSH terminal, execute the following instructions on both servers.
   firewall-cmd --reload
   ```
 
- * Create a default page for each server
+ * Create a default page for Web Server 1
   ```bash  
   echo "<h1>This is Webserver 01" > /var/www/html/index.html
   ```   
-  or for server 2
+  * Create a default page for Web Server 2
   ```
-  cd 
   echo "<h1>This is Webserver 02" > /var/www/html/index.html
   ```
 
- * CTRL+O to save and CTRL+Q to Quit 
-
+ 
  * Test default website from the local server
   ```bash
   elinks http://localhost
@@ -286,6 +284,11 @@ From the SSH terminal, execute the following instructions on both servers.
   * Refresh the web page, you will see Web Server 02. The Load balancer detects VM1 is down and redirects traffic to VM2.
 
    ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-8.png)
+
+  * Start the webserver on all machines
+  ```bash
+  systemctl start httpd.service
+  ```
 
 # Automation Scripts (ARM Template)
   * From the left panel on the Azure Portal, select **Resource Groups**.
