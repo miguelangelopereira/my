@@ -48,7 +48,7 @@ After completing the exercises in this module, you will be able to:
   * Make sure to choose **HDD disk**
   * Choose password Authentication Type and make sure the user name is in lowercase only
 
-    ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-1.png)
+    ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-10.png)
 
   * For the size select **D1_V2**
   
@@ -57,11 +57,11 @@ After completing the exercises in this module, you will be able to:
   * Below Storage select **Yes** to **Use managed disks**
   * Select the previously create Virtual Network and the Web subnet
   
-    ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-2.png)
+    ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-11.png)
 
   * Create a Diagnostics Storage account named **(prefix)dbdiag**
 
-   ![Screenshot](media/website-on-iaas-http/poc-7.png)
+   ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-12.png)
 
   * After the Virtual machines are created, take note of the Public IP address for each Virtual Machine:
 
