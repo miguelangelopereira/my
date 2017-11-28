@@ -8,8 +8,7 @@
 * [Customize your Azure Portal](#customize-your-azure-portal)
 * [Virtual Machine Creation](#virtual-machine-creation)
 * [Connect to the Virtual Machine](#connect-to-the-virtual-machine)
-* [Install MariaDB and Galera Cluster](#
-Install-MariaDB-and-Galera-Cluster)
+* [Install MariaDB and Galera Cluster](#Install-MariaDB-and-Galera-Cluster)
 * [Load Balancer Creation](#load-balancer-creation)
 * [Add the VMs to Load Balancer](#add-the-vms-to-load-balancer)
 * [Create the load balancing rule for MYSQL](#create-the-load-balancing-rule-for-mysql)
