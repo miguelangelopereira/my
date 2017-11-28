@@ -6,19 +6,19 @@
 * [Prerequisites](#prerequisites)
 * [Estimated time to complete this module](#estimated-time-to-complete-this-module)
 * [Customize your Azure Portal](#customize-your-azure-portal)
-* [Resource Group creation](#resource-group-creation)
-* [Virtual Network Creation](#virtual-network-creation)
 * [Virtual Machine Creation](#virtual-machine-creation)
 * [Connect to the Virtual Machine](#connect-to-the-virtual-machine)
-* [Install HTTPD on the VMs](#install-httpd-on-the-vms)
+* [Install MariaDB and Galera Cluster](#
+Install-MariaDB-and-Galera-Cluster)
 * [Load Balancer Creation](#load-balancer-creation)
 * [Add the VMs to Load Balancer](#add-the-vms-to-load-balancer)
-* [Create the load balancing rule for HTTP](#create-the-load-balancing-rule-for-http)
-* [Update the NSG (inbound security rule)](#update-the-nsg-inbound-security-rule)
-* [Assign DNS name to Load Balancer](#assign-dns-name-to-load-balancer)
+* [Create the load balancing rule for MYSQL](#create-the-load-balancing-rule-for-mysql)
+* [Add data disk to Web Servers](#add-data-disk-to-web-servers)
+* [Configure Gluster Storage Replication](#configure-cluster-storage-replication)
+* [Reconfigure Apache](#reconfigure-apache)
+* [Prepare Wordpress Installation](#prepare-wordpress-installation)
+* [Install Wordpress](#install-wordpress)
 * [Testing](#testing)
-* [Automation Scripts (ARM Template)](#automation-scripts-arm-template)
-* [Visualize your Architecture with ArmViz](#visualize-your-architecture-with-armviz)
 
 
 # Abstract
@@ -26,6 +26,16 @@
 During this module, you will learn about bringing together all the infrastructure components to build a Wordpress Website running on Linux and making it scalable, highly available and secure.
 
 ![Screenshot](media/website-on-iaas-http-linux/wordpressdiagram-1.png)
+
+* Two DB servers will host MariaDB with Galera cluster for replication
+* An Azure Internal Load Balancer will distribute the traffic to the DB servers
+* Two Web servers will host Apache
+* A data disk will be added to each Web Server
+* Gluster storage will be configured on the Web Servers and will replicate the Web Server file content
+* Wordpress will be installed on both Web Servers
+* An Azure External Load Balancer will distribute the traffice to the Web servers
+
+> Note: This document describes the steps for a proof of concept. Additional steps may be required for a production environment
 
 # Learning objectives
 After completing the exercises in this module, you will be able to:
@@ -39,7 +49,7 @@ After completing the exercises in this module, you will be able to:
 # Prerequisites 
 * Complete the "Deploying Website on Azure IaaS VMs (Red Hat Enterprise Linux) - HTTP" as this scenario starts from the completed infrastructure configured on that PoC
 
-[Deploying Website on Azure IaaS VMs (Red Hat Enterprise Linux)](https://tbd/)
+[Deploying Website on Azure IaaS VMs (Red Hat Enterprise Linux)](https://github.com/Azure/fta-azurefundamentals/blob/master/iaas-fundamentals/articles/website-on-iaas-http-rhel.md)
 
 
 # Estimated time to complete this module
@@ -76,7 +86,7 @@ After completing the exercises in this module, you will be able to:
 
 * For Windows download [SSH Putty client](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
 
-* Open two instances of the putty client and connect to the servers
+* Open four instances of the putty client and connect to the DB servers and Web servers
 
  ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-4.png)
 
@@ -89,8 +99,8 @@ ssh azureadmin@<public ip address>
 ```
  ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-6.png)
 
-# Install MariaDB and Galera Cluster on the VMs
-From the SSH terminal, execute the following instructions on both servers.
+# Install MariaDB and Galera Cluster
+From the SSH terminal, execute the following instructions on both DB servers.
 
   * Elevate privileges to root
   ```bash
@@ -147,7 +157,7 @@ firewall-cmd --reload
 CREATE DATABASE ftdemo;
 ```
 
-* Create a new user for remote connection and grand privileges
+* Create a new user for remote connection and grant privileges
 ```sql
 CREATE USER 'ftdemodbuser'@'%' IDENTIFIED BY '<New Password>';
 GRANT ALL PRIVILEGES ON *.* TO 'ftdemodbuser'@'%' WITH GRANT OPTION;
@@ -184,7 +194,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'ftdemodbuser'@'%' WITH GRANT OPTION;
   * **Repeat** the step above to also add the IP configuration for the second web server.
   * Click **OK**.
 
-# Create the load balancing rule for HTTP (ongoing)
+# Create the load balancing rule for MYSQL
   * Under **Settings** select **Load balancing rules**, click **Add**.
   * Enter name **(prefix)-db-lbr**.
     *  Protocol: **TCP**
@@ -217,12 +227,13 @@ GRANT ALL PRIVILEGES ON *.* TO 'ftdemodbuser'@'%' WITH GRANT OPTION;
 
 # Configure Gluster Storage Replication
 
+* Execute these steps on both WEB servers
 * Add Gluster software repository by creating a new repo file
 ```bash
 nano /etc/yum.repos.d/Gluster.repo
 ```
 
-* Add the following configuratio nto the new file
+* Add the following configuration to the new file
 ```
 [gluster38]
 name=Gluster 3.8

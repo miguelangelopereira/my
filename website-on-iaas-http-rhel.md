@@ -27,6 +27,11 @@ During this module, you will learn about bringing together all the infrastructur
 
 ![Screenshot](media/website-on-iaas-http-linux/pocdiagram-1.png)
 
+* Two Web Servers with Apache will host the website
+* An Azure External Load Balancer will distribute the traffice to the Web servers
+
+> Note: This document describes the steps for a proof of concept. Additional steps may be required for a production environment
+
 # Learning objectives
 After completing the exercises in this module, you will be able to:
 * Create a Resource Group
