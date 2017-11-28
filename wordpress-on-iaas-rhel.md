@@ -13,7 +13,7 @@
 * [Add the VMs to Load Balancer](#add-the-vms-to-load-balancer)
 * [Create the load balancing rule for MYSQL](#create-the-load-balancing-rule-for-mysql)
 * [Add data disk to Web Servers](#add-data-disk-to-web-servers)
-* [Configure Gluster Storage Replication](#configure-cluster-storage-replication)
+* [Configure Gluster Storage Replication](#configure-gluster-storage-replication)
 * [Reconfigure Apache](#reconfigure-apache)
 * [Prepare Wordpress Installation](#prepare-wordpress-installation)
 * [Install Wordpress](#install-wordpress)
