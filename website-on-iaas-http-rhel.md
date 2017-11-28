@@ -132,12 +132,12 @@ From the SSH terminal, execute the following instructions on both servers.
 
   * Install HTTP Server
   ```bash
-  yum install httpd
+  yum install -y httpd
   ```
 
   * Install elinks terminal browser for testing
   ```bash
-  yum install elinks
+  yum install -y elinks
   ```
 
  * Configure HTTP to automatic start
