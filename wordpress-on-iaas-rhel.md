@@ -94,12 +94,12 @@ From the SSH terminal, execute the following instructions on both servers.
 
   * Install MariaDB and Galera Cluster
   ```bash
-  yum install rh-mariadb101-mariadb-server-galera 
+  yum install rh-mariadb101-mariadb-server-galera mariadb
   ```
 
-  * Install elinks terminal browser for testing
+  * Confirm the internal IP address of each server
   ```bash
-  yum install elinks
+  ifconfig
   ```
 
  * Open Galera configuration file
@@ -107,12 +107,14 @@ From the SSH terminal, execute the following instructions on both servers.
   nano /etc/opt/rh/rh-mariadb101/my.cnf.d/galera.cnf
   ```
 
- * Change wsrep_cluster_address with the Database Server IPs
+ * Change wsrep_cluster_address with the Database Server IPs. Remove the "#" from the beginning of the line. 
   ```bash
   wsrep_cluster_address="gcomm://10.0.1.4,10.0.1.5"
-  ```
+  ```  
 
- * Enable MariaDb service
+ * CTRL+O to Save. CTRL+Q to Quit.
+
+ * Bootstrap MariaDb service (execute only on server 1)
   ```bash
  scl enable rh-mariadb101 galera_new_cluster
   ```
@@ -136,15 +138,10 @@ firewall-cmd --reload
  mysql
  ```
 
-* Change root default password
-```sql
-SET PASSWORD FOR 'root'@'localhost' = PASSWORD('<New Password>');
-```
-
 * Create a new user for remote connection and grand privileges
 ```sql
 CREATE USER 'ftdemodbuser'@'%' IDENTIFIED BY '<New Password>';
-GRANT ALL PRIVILEGES ON *.* TO 'maria'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'ftdemodbuser'@'%' WITH GRANT OPTION;
 ```
 
 # Load Balancer Creation (ongoing)
