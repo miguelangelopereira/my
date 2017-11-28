@@ -148,32 +148,29 @@ GRANT ALL PRIVILEGES ON *.* TO 'ftdemodbuser'@'%' WITH GRANT OPTION;
   * From the left panel on the Azure Portal, select **Load balancers**.
   * Click on **Add**
   * Name: **(prefix)-db-lb**
-  * Click **Public IP Address**, click **New**
-  * Enter name **(prefix)-web-pip**, click **Ok**
-
-     ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
+  * Type: **Internal**
+  * Virtual Network: **(prefix)-vnet**
+  * Subnet: **(prefix)-db-snet**
+  * IP Address Assignment: Static
+  * Choose one IP and remember it. For example 10.0.1.10.  
+  
+     ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-13.png)
 
   * Select **Use Existing** for **Resource Group**, i.e. **(prefix)-poc-rg**, click **Create**
-
-     ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
-
   * After the **Load Balancer** is created, select the one you added.
-
-     ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
-
   * Under **Settings** select **Health probes**, click **Add**.
-  * Enter name **(prefix)-web-prob**, leaving all the defaults, click **Ok**
+  * Enter name **(prefix)-db-prob**, changing the port to 3306, click **Ok**
 
-   ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
+   ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-21.png)
 
 # Add the VMs to Load Balancer
   * Under **Settings** select **Backend pools**, click **Add**.
-  * Enter name **(prefix)-web-pool**.
+  * Enter name **(prefix)-db-pool**.
   * For **Associated to**, select **Availability set**.
-  * For the **Availability set**, select **(prefix)-web-as**.
+  * For the **Availability set**, select **(prefix)-db-as**.
   * Click **Add a target network IP configuration** to add the first web server and its IP address.
 
-   ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
+   ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-15.png)
 
   * **Repeat** the step above to also add the IP configuration for the second web server.
   * Click **OK**.
