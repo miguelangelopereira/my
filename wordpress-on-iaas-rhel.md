@@ -1,4 +1,4 @@
-# POC Scenario 1: Deploying Wordpress on Azure IaaS VMs (Red Hat Enterprise Linux) - HTTP
+# POC Scenario 2: Deploying Wordpress on Azure IaaS VMs (Red Hat Enterprise Linux) - HTTP
 
 ## Table of Contents
 * [Abstract](#abstract)
@@ -29,7 +29,12 @@ During this module, you will learn about bringing together all the infrastructur
 
 # Learning objectives
 After completing the exercises in this module, you will be able to:
-* TBD
+* Create Linux Virtual Machine
+* Create an Availability Set
+* Create and configure a Load Balancer
+* Configure a Highly Available MariaDB cluster with Azure Load Balancer
+* Configure a Highly Available Wordpress site with storage replication (gluster)
+* Adding a Managed Disk to an existing VM and initializing the disk in Linux
 
 # Prerequisites 
 * Complete the "Deploying Website on Azure IaaS VMs (Red Hat Enterprise Linux) - HTTP" as this scenario starts from the completed infrastructure configured on that PoC
@@ -38,7 +43,7 @@ After completing the exercises in this module, you will be able to:
 
 
 # Estimated time to complete this module
-1 hour
+1.5 hour
 
 # Virtual Machine Creation
   * Create 2 VMs for the database
@@ -137,6 +142,10 @@ firewall-cmd --reload
  ```bash
  mysql
  ```
+* Create a new database
+```sql
+CREATE DATABASE ftdemo;
+```
 
 * Create a new user for remote connection and grand privileges
 ```sql
@@ -177,61 +186,18 @@ GRANT ALL PRIVILEGES ON *.* TO 'ftdemodbuser'@'%' WITH GRANT OPTION;
 
 # Create the load balancing rule for HTTP (ongoing)
   * Under **Settings** select **Load balancing rules**, click **Add**.
-  * Enter name **(prefix)-http-lbr**.
+  * Enter name **(prefix)-db-lbr**.
     *  Protocol: **TCP**
-    *  Port: **80**
-    *  Backend port: 80
-    *  Backend pool: **(prefix)-web-pool(2VMs)**
-    *  Probe: **(prefix)-web-prob(HTTP:80)**
+    *  Port: **3306**
+    *  Backend port: 3306
+    *  Backend pool: **(prefix)-db-pool(2VMs)**
+    *  Probe: **(prefix)-db-prob(HTTP:3306)**
     *  Session Persistence: **None**
     *  Idle timeout (min):**4**
     *  Floating IP (direct server return): **Disabled**
     *  Click **Ok**
 
-   ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
-
-
-# Update the NSG (inbound security rule) (ongoing)
-## Virtual machine #1
-  * From the left panel on the Azure Portal, select **Virtual machines**, then select **(prefix)-web01-vm**.
-  * Under **Settings** select **Network Interfaces** 
-  * Click on **(prefix)-web01-vm-nsg**.
-  * Under **Settings** select **Network Security Groups**.
-  * Under **Network Security Group**, click on **(prefix)-web01-vm-nsg**.
-
-   ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
-
-  * Under **Settings**, click on **Inbound Security Rules**.
-  * Click **Add**, Enter name **(prefix)-web01-vm-nsgr-http-allow**
-    *  Priority:**1010**
-    *  Source: **any**
-    *  Service: **HTTP**
-    *  Protocol: **TCP**
-    *  Port range: **80**
-    *  Action: **Allow**
-
-   ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
-
-
-## Virtual machine #2 (ongoing)
-  * From the left panel on the Azure Portal, select **Virtual machines**, then select **(prefix)-web02-vm**.
-  * Under **Settings** select **Network Interfaces** 
-  * Click on **(prefix)-web02-vm-nsg**.
-  * Under **Settings** select **Network Security Groups**.
-
-  ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
-
-  * Click on **(prefix)-web02-vm-nsg**.
-  * Under **Settings**, click on **Inbound Security Rules**.
-  * Click **Add**, Enter name **(prefix)-web02-vm-nsgr-http-allow**
-    *  Priority:**1010**
-    *  Source: **any**
-    *  Service: **HTTP**
-    *  Protocol: **TCP**
-    *  Port range: **80**
-    *  Action: **Allow**
-
-   ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
+   ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-22.png)
 
 
  # Add data disk to Web Servers
@@ -251,25 +217,124 @@ GRANT ALL PRIVILEGES ON *.* TO 'ftdemodbuser'@'%' WITH GRANT OPTION;
 
 # Configure Gluster Storage Replication
 
-TBD
+* Add Gluster software repository by creating a new repo file
+```bash
+nano /etc/yum.repos.d/Gluster.repo
+```
 
-# Configure Storage Replication
+* Add the following configuratio nto the new file
+```
+[gluster38]
+name=Gluster 3.8
+baseurl=http://mirror.centos.org/centos/7/storage/$basearch/gluster-3.8/
+gpgcheck=0
+enabled=1
+```
+> Note: With a valid Red Hat Enterprise subscription different repositories would be used
 
-TBD
+* CTRL+O to Save. CTRL+Q to Quit.
+
+* Install gluster storage
+```bash
+yum install -y glusterfs-server
+```
+* Enable the gluster service
+```bash
+systemctl enable glusterd
+```
+
+* Start the gluster service
+```bash
+systemctl start glusterd
+```
+
+* Add the gluster firewall exceptions
+```bash
+firewall-cmd --zone=public --add-port=24007-24008/tcp --permanent
+firewall-cmd --zone=public --add-port=24009/tcp --permanent
+firewall-cmd --zone=public --add-service=nfs --add-service=samba --add-service=samba-client --permanent
+firewall-cmd --zone=public --add-port=111/tcp --add-port=139/tcp --add-port=445/tcp --add-port=965/tcp --add-port=2049/tcp --add-port=38465-38469/tcp --add-port=631/tcp --add-port=111/udp --add-port=963/udp --add-port=49152-49251/tcp --permanent
+firewall-cmd --reload
+```
+
+* On the first server, execute the probe command point to the second server
+```bash
+gluster peer probe 10.0.0.5
+```
+
+* On the second server, execute the probe command point to the first server
+```bash
+gluster peer probe 10.0.0.4
+```
+
+* Create a new gluster volume and start (Execute only or server 1)
+```bash
+gluster volume create volume1 replica 2 transport tcp 10.0.0.4:/datadrive 10.0.0.5:/datadrive force
+gluster volume start volume1
+```
+
+* On the first server, Mount the gluster volume, point to the second server
+```bash
+mkdir /var/www/ftdemo
+mount -t glusterfs 10.0.0.5:/volume1 /var/www/ftdemo
+```
+
+* And add the following line to ***/etc/fstab*** for automatic mount
+```
+10.0.0.5:/volume1 /var/www/ftdemo glusterfs defaults,_netdev 0 0
+```
+
+* On the second server, Mount the gluster volume, point to the first server
+```bash
+mkdir /var/www/ftdemo
+mount -t glusterfs 10.0.0.4:/volume1 /var/www/ftdemo
+```
+
+* And add the following line to ***/etc/fstab*** for automatic mount
+```
+10.0.0.4:/volume1 /var/www/ftdemo glusterfs defaults,_netdev 0 0
+```
+
+* Enable http to use gluster in SELinux
+```
+setsebool -P httpd_use_fusefs 1
+```
 
 # Reconfigure Apache
 
+* Execute the following steps on both Web Servers
 * Install additional packages for apache
 ```bash
 yum install php php-common php-mysql php-gd php-xml php-mbstring php-mcrypt
 ```
 
-mkdir /var/www/ftdemo
+* Enable selinux access to database
+```bash
+setsebool -P httpd_can_network_connect_db=1
+```
 
-TBD
+* Create a new apache configuration file
+```bash
+nano /etc/httpd/conf.d/ftdemo.conf
+```
 
-# Install Wordpress
+* Include de following configuration on the new file
+```
+<VirtualHost *:80>
+    ServerName <DNS NAME>.westus2.cloudapp.azure.com
+    DocumentRoot /var/www/ftdemo
+</VirtualHost>
+```
+* CTRL+O to Save. CTRL+Q to Quit.
 
+* Restart apache
+```bash
+systemctl restart httpd
+```
+
+# Prepare Wordpress Installation 
+
+* Execute these steps only on Web Server 1
 * Download the latest version of Wordpress and copy contents to the final location
 ```bash
 cd /tmp
@@ -277,6 +342,11 @@ wget http://wordpress.org/latest.tar.gz
 tar xzf latest.tar.gz
 mv wordpress/* /var/www/ftdemo
 ```
+* Give permissions to apache
+```
+chown -R apache:apache /var/www/ftdemo
+```
+
 * Open the wordpress configuration file
 ```
 cd /var/www/ftdemo
@@ -285,6 +355,7 @@ nano wp-config.php
 ```
 
 * Change the mysql settings. 
+```
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define('DB_NAME', 'ftademo');
@@ -294,18 +365,23 @@ define('DB_USER', 'ftademodbuser');
 define('DB_PASSWORD', '<Password>');
 /** MySQL hostname */
 define('DB_HOST', '<Azure Internal Load Balancer IP>');
+```
+
+# Install wordpress
+  * Browse to the load balancer public IP dns: **http://(prefix).westus2.cloudapp.azure.com/**
+  * You will see the WordPress Welcome Page
+  * Fill out the form and click ***Install Wordpress***
+
+   ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-16.png)
+
+   * When the installation is completed a success page will appear
+   ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-23.png)
+
+   * Click ***Log in**, enter your credentials and ensure you can access the Wordpress backoffice
+   ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-24.png)
 
 
-# Testing 
-  * Browse to the load balancer public IP or **http://(prefix).westus2.cloudapp.azure.com/**
-  * You will see the Web server default page showing either Web Server 01 or 02.
-  * If you see Web Server 01, then SSH into VM1, stop the httpd server
-  ```bash
-  systemctl stop httpd.service
-  ```
-  * Refresh the web page, you will see Web Server 02. The Load balancer detects VM1 is down and redirects traffic to VM2.
-
-   ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-8.png)
-
-
+# Testing
+ * Browse to the load balancer public IP dns **http://(prefix).westus2.cloudapp.azure.com/**
+ ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-25.png)
 
