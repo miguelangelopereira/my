@@ -147,45 +147,27 @@ CREATE USER 'ftdemodbuser'@'%' IDENTIFIED BY '<New Password>';
 GRANT ALL PRIVILEGES ON *.* TO 'maria'@'%' WITH GRANT OPTION;
 ```
 
- # Add data disk to Web Servers
-  * Open the Azure Portal
-  * Select the First Web Server
-  * Select Disks
-  * Select "+Add Data Disks"
-  * Create a new Managed Disk with 32 Gb with Standard tier
-
-  ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-17.png)
-
-  * Connect to the server via SSH
-  * Initialize the data disk using the following procedure:
-  
-  [Initialize Data Disk](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-linux)
-
-  * You can mount the new disk in /datadrive
-  * Repeat the steps in the second server
-
-
-# Load Balancer Creation
+# Load Balancer Creation (ongoing)
   * From the left panel on the Azure Portal, select **Load balancers**.
   * Click on **Add**
-  * Name: **(prefix)-web-lb**
+  * Name: **(prefix)-db-lb**
   * Click **Public IP Address**, click **New**
   * Enter name **(prefix)-web-pip**, click **Ok**
 
-     ![Screenshot](media/website-on-iaas-http/poc-15-dynamic.png)
+     ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
 
   * Select **Use Existing** for **Resource Group**, i.e. **(prefix)-poc-rg**, click **Create**
 
-     ![Screenshot](media/website-on-iaas-http/poc-16.png)
+     ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
 
   * After the **Load Balancer** is created, select the one you added.
 
-     ![Screenshot](media/website-on-iaas-http/poc-17.png)
+     ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
 
   * Under **Settings** select **Health probes**, click **Add**.
   * Enter name **(prefix)-web-prob**, leaving all the defaults, click **Ok**
 
-   ![Screenshot](media/website-on-iaas-http/poc-18.png)
+   ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
 
 # Add the VMs to Load Balancer
   * Under **Settings** select **Backend pools**, click **Add**.
@@ -194,12 +176,12 @@ GRANT ALL PRIVILEGES ON *.* TO 'maria'@'%' WITH GRANT OPTION;
   * For the **Availability set**, select **(prefix)-web-as**.
   * Click **Add a target network IP configuration** to add the first web server and its IP address.
 
-   ![Screenshot](media/website-on-iaas-http/poc-19.png)
+   ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
 
   * **Repeat** the step above to also add the IP configuration for the second web server.
   * Click **OK**.
 
-# Create the load balancing rule for HTTP
+# Create the load balancing rule for HTTP (ongoing)
   * Under **Settings** select **Load balancing rules**, click **Add**.
   * Enter name **(prefix)-http-lbr**.
     *  Protocol: **TCP**
@@ -212,10 +194,10 @@ GRANT ALL PRIVILEGES ON *.* TO 'maria'@'%' WITH GRANT OPTION;
     *  Floating IP (direct server return): **Disabled**
     *  Click **Ok**
 
-   ![Screenshot](media/website-on-iaas-http/poc-22.png)
+   ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
 
 
-# Update the NSG (inbound security rule)
+# Update the NSG (inbound security rule) (ongoing)
 ## Virtual machine #1
   * From the left panel on the Azure Portal, select **Virtual machines**, then select **(prefix)-web01-vm**.
   * Under **Settings** select **Network Interfaces** 
@@ -223,7 +205,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'maria'@'%' WITH GRANT OPTION;
   * Under **Settings** select **Network Security Groups**.
   * Under **Network Security Group**, click on **(prefix)-web01-vm-nsg**.
 
-   ![Screenshot](media/website-on-iaas-http/poc-23.png)
+   ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
 
   * Under **Settings**, click on **Inbound Security Rules**.
   * Click **Add**, Enter name **(prefix)-web01-vm-nsgr-http-allow**
@@ -234,16 +216,16 @@ GRANT ALL PRIVILEGES ON *.* TO 'maria'@'%' WITH GRANT OPTION;
     *  Port range: **80**
     *  Action: **Allow**
 
-   ![Screenshot](media/website-on-iaas-http/poc-24.png)
+   ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
 
 
-## Virtual machine #2
+## Virtual machine #2 (ongoing)
   * From the left panel on the Azure Portal, select **Virtual machines**, then select **(prefix)-web02-vm**.
   * Under **Settings** select **Network Interfaces** 
   * Click on **(prefix)-web02-vm-nsg**.
   * Under **Settings** select **Network Security Groups**.
 
-  ![Screenshot](media/website-on-iaas-http/poc-25.png)
+  ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
 
   * Click on **(prefix)-web02-vm-nsg**.
   * Under **Settings**, click on **Inbound Security Rules**.
@@ -255,17 +237,70 @@ GRANT ALL PRIVILEGES ON *.* TO 'maria'@'%' WITH GRANT OPTION;
     *  Port range: **80**
     *  Action: **Allow**
 
-   ![Screenshot](media/website-on-iaas-http/poc-26.png)
+   ![Screenshot](media/website-on-iaas-http/poc-tbd.png)
 
 
-# Assign DNS name to Load Balancer
-  * From the left panel on the Azure Portal, select **Public IP sddresses**.
-  * Select **(prefix)-web-pip**.
-  * Under Settings, click on **Configuration**.
-  * Under DNS name enter **(prefix)**.
-      * i.e. http://**(prefix)**.westus2.cloudapp.azure.com/
+ # Add data disk to Web Servers
+  * Open the Azure Portal
+  * Select the First Web Server
+  * Select Disks
+  * Select "+Add Data Disks"
+  * Create a new Managed Disk with 32 Gb with Standard tier
 
-   ![Screenshot](media/website-on-iaas-http/poc-27.png)
+  ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-17.png)
+
+  * Connect to the server via SSH
+  * Initialize the data disk using the following procedure: [Initialize Data Disk](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-linux)
+
+  * You can mount the new disk in /datadrive
+  * Repeat the steps in the second server
+
+# Configure Gluster Storage Replication
+
+TBD
+
+# Configure Storage Replication
+
+TBD
+
+# Reconfigure Apache
+
+* Install additional packages for apache
+```bash
+yum install php php-common php-mysql php-gd php-xml php-mbstring php-mcrypt
+```
+
+mkdir /var/www/ftdemo
+
+TBD
+
+# Install Wordpress
+
+* Download the latest version of Wordpress and copy contents to the final location
+```bash
+cd /tmp
+wget http://wordpress.org/latest.tar.gz
+tar xzf latest.tar.gz
+mv wordpress/* /var/www/ftdemo
+```
+* Open the wordpress configuration file
+```
+cd /var/www/ftdemo
+cp wp-config-sample.php wp-config.php
+nano wp-config.php
+```
+
+* Change the mysql settings. 
+// ** MySQL settings - You can get this info from your web host ** //
+/** The name of the database for WordPress */
+define('DB_NAME', 'ftademo');
+/** MySQL database username */
+define('DB_USER', 'ftademodbuser');
+/** MySQL database password */
+define('DB_PASSWORD', '<Password>');
+/** MySQL hostname */
+define('DB_HOST', '<Azure Internal Load Balancer IP>');
+
 
 # Testing 
   * Browse to the load balancer public IP or **http://(prefix).westus2.cloudapp.azure.com/**
@@ -278,19 +313,5 @@ GRANT ALL PRIVILEGES ON *.* TO 'maria'@'%' WITH GRANT OPTION;
 
    ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-8.png)
 
-# Automation Scripts (ARM Template)
-  * From the left panel on the Azure Portal, select **Resource Groups**.
-  * Select **(prefix)-poc-rg**.
-  * Under Settings, click **Download** | **Save As** | (select location)
 
-   ![Screenshot](media/website-on-iaas-http/poc-29.png)
-
-  * After download, **Extract All** to (select location)
-  
-  ![Screenshot](media/website-on-iaas-http/poc-30.png)
-
-# Visualize your Architecture with ArmViz
-  * Open browser and goto **http://armviz.io** to view the template.
-
-   ![Screenshot](media/website-on-iaas-http/armvizdiagram.png)
 

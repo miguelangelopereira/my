@@ -25,6 +25,8 @@
 
 During this module, you will learn about bringing together all the infrastructure components to build a sample Linux application and making it scalable, highly available and secure.
 
+![Screenshot](media/website-on-iaas-http/pocdiagram-1.png)
+
 # Learning objectives
 After completing the exercises in this module, you will be able to:
 * Create a Resource Group
