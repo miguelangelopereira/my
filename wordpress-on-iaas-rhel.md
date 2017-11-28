@@ -108,7 +108,7 @@ From the SSH terminal, execute the following instructions on both DB servers.
 
   * Install MariaDB and Galera Cluster
   ```bash
-  yum install rh-mariadb101-mariadb-server-galera mariadb
+  yum install -y rh-mariadb101-mariadb-server-galera mariadb
   ```
 
   * Confirm the internal IP address of each server
@@ -124,7 +124,16 @@ From the SSH terminal, execute the following instructions on both DB servers.
  * Change wsrep_cluster_address with the Database Server IPs. Remove the "#" from the beginning of the line. 
   ```bash
   wsrep_cluster_address="gcomm://10.0.1.4,10.0.1.5"
-  ```  
+  ```
+
+   * Create Firewall exceptions:
+  ```bash
+  firewall-cmd --zone=public --add-port=3306/tcp --permanent
+  firewall-cmd --zone=public --add-port=4567/tcp --permanent  
+  firewall-cmd --zone=public --add-port=4568/tcp --permanent
+  firewall-cmd --zone=public --add-port=4444/tcp --permanent
+  firewall-cmd --reload
+  ```   
 
  * CTRL+O to Save. CTRL+Q to Quit.
 
@@ -132,31 +141,26 @@ From the SSH terminal, execute the following instructions on both DB servers.
   ```bash
  scl enable rh-mariadb101 galera_new_cluster
   ```
+ * Enable MariaDB service
+  ```bash
+  systemctl enable rh-mariadb101-mariadb.service
+  ```  
 
  * Start MariaDB service
   ```bash
   systemctl start rh-mariadb101-mariadb.service
   ```  
 
- * Create Firewall exceptions:
-  ```bash
- firewall-cmd --zone=public --add-port=3306/tcp --permanent
-firewall-cmd --zone=public --add-port=4567/tcp --permanent
-firewall-cmd --zone=public --add-port=4568/tcp --permanent
-firewall-cmd --zone=public --add-port=4444/tcp --permanent
-firewall-cmd --reload
-  ``` 
-
  * Open mysql locally (first server only)
  ```bash
  mysql
  ```
-* Create a new database
+* Create a new database (first server only)
 ```sql
 CREATE DATABASE ftdemo;
 ```
 
-* Create a new user for remote connection and grant privileges
+* Create a new user for remote connection and grant privileges (first server only)
 ```sql
 CREATE USER 'ftdemodbuser'@'%' IDENTIFIED BY '<New Password>';
 GRANT ALL PRIVILEGES ON *.* TO 'ftdemodbuser'@'%' WITH GRANT OPTION;
@@ -172,7 +176,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'ftdemodbuser'@'%' WITH GRANT OPTION;
   * IP Address Assignment: Static
   * Choose one IP and remember it. For example 10.0.1.10.  
   
-     ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-13.png)
+    ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-13.png)
 
   * Select **Use Existing** for **Resource Group**, i.e. **(prefix)-poc-rg**, click **Create**
   * After the **Load Balancer** is created, select the one you added.
@@ -267,6 +271,11 @@ firewall-cmd --zone=public --add-port=111/tcp --add-port=139/tcp --add-port=445/
 firewall-cmd --reload
 ```
 
+* Enable http to use gluster in SELinux
+```
+setsebool -P httpd_use_fusefs 1
+```
+
 * On the first server, execute the probe command point to the second server
 ```bash
 gluster peer probe 10.0.0.5
@@ -289,7 +298,7 @@ mkdir /var/www/ftdemo
 mount -t glusterfs 10.0.0.5:/volume1 /var/www/ftdemo
 ```
 
-* And add the following line to ***/etc/fstab*** for automatic mount
+* And, still on the first server, add the following line to ***/etc/fstab*** for automatic mount
 ```
 10.0.0.5:/volume1 /var/www/ftdemo glusterfs defaults,_netdev 0 0
 ```
@@ -300,22 +309,19 @@ mkdir /var/www/ftdemo
 mount -t glusterfs 10.0.0.4:/volume1 /var/www/ftdemo
 ```
 
-* And add the following line to ***/etc/fstab*** for automatic mount
+* And, still on the second server, add the following line to ***/etc/fstab*** for automatic mount
 ```
 10.0.0.4:/volume1 /var/www/ftdemo glusterfs defaults,_netdev 0 0
 ```
 
-* Enable http to use gluster in SELinux
-```
-setsebool -P httpd_use_fusefs 1
-```
+
 
 # Reconfigure Apache
 
 * Execute the following steps on both Web Servers
 * Install additional packages for apache
 ```bash
-yum install php php-common php-mysql php-gd php-xml php-mbstring php-mcrypt
+yum install -y php php-common php-mysql php-gd php-xml php-mbstring php-mcrypt
 ```
 
 * Enable selinux access to database
@@ -344,7 +350,7 @@ systemctl restart httpd
 
 # Prepare Wordpress Installation 
 
-* Execute these steps only on Web Server 1
+* Execute these steps only on ***Web Server 1***
 * Download the latest version of Wordpress and copy contents to the final location
 ```bash
 cd /tmp
@@ -368,9 +374,9 @@ nano wp-config.php
 ```
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', 'ftademo');
+define('DB_NAME', 'ftdemo');
 /** MySQL database username */
-define('DB_USER', 'ftademodbuser');
+define('DB_USER', 'ftdemodbuser');
 /** MySQL database password */
 define('DB_PASSWORD', '<Password>');
 /** MySQL hostname */
