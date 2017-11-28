@@ -78,7 +78,7 @@ After completing the exercises in this module, you will be able to:
   * Name the 2nd VM **(prefix)-web02-vm**
   * Make sure to choose **HDD disk**
   * Choose password Authentication Type and make sure the user name is in lowercase only
-  
+
   ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-1.png)
   > Note: In a production scenario, consider using SSH public key authentication
 
@@ -99,7 +99,8 @@ After completing the exercises in this module, you will be able to:
 
     ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-3.png)
 
-# Connect to The Virtual Machine
+  
+# Connect to The Virtual Machines
 
 * For Windows download [SSH Putty client](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
 
@@ -151,16 +152,14 @@ From the SSH terminal, execute the following instructions on both servers.
   ```
 
  * Create a default page for each server
-  ```bash
-  cd /var/www/html
-  nano index.html
-  ```  
-
- * Write the following HTML in the file:
+  ```bash  
+  echo "<h1>This is Webserver 01" > /var/www/html/index.html
+  ```   
+  or for server 2
   ```
-  For VM1: <h1>This is Web Server 01</h1>
-  For VM2: <h1>This is Web Server 02</h1>
-  ``` 
+  cd 
+  echo "<h1>This is Webserver 02" > /var/www/html/index.html
+  ```
 
  * CTRL+O to save and CTRL+Q to Quit 
 
