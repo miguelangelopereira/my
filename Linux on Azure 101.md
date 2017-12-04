@@ -67,10 +67,7 @@ ssh azureadmin@<public ip address>
 [Log in with Azure CLI 2.0](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli?view=azure-cli-latest)
 
 # Monitoring Linux with Boot Diagnostics
-* Enable Boot Diagnostics either by using the Azure CLI or the Portal:
-[Enable Boot Diagnostics using CLI] (https://docs.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-monitoring#enable-boot-diagnostics)
-
-[Enable Boot Diagnostics using the Portal] (https://docs.microsoft.com/en-us/azure/virtual-machines/linux/boot-diagnostics)
+* Enable Boot Diagnostics either by using the Azure CLI or the Portal: [Enable Boot Diagnostics using CLI](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-monitoring#enable-boot-diagnostics) or [Enable Boot Diagnostics using the Portal](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/boot-diagnostics)
 
 * View Boot Diagnostics by using the CLI
 [Enable Boot Diagnostics using CLI] (https://docs.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-monitoring#enable-boot-diagnostics)
