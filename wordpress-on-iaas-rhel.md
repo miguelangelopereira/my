@@ -50,6 +50,8 @@ After completing the exercises in this module, you will be able to:
 
 [Deploying Website on Azure IaaS VMs (Red Hat Enterprise Linux)](https://github.com/Azure/fta-azurefundamentals/blob/master/iaas-fundamentals/articles/website-on-iaas-http-rhel.md)
 
+# Linux Distribution
+* This PoC release is based on the Red Hat Enterprise Linux OS and is expected to work on any distribution of the Red Hat Family. 
 
 # Estimated time to complete this module
 1.5 hour
