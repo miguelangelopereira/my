@@ -208,6 +208,22 @@ az network lb rule create -g FastTrackWordpressPoC --lb-name ftppoc-db-lb -n ftp
   * **Repeat** the step above to also add the IP configuration for the second web server.
   * Click **OK**.
 
+# Create the load balancing rule for MYSQL
+  * Under **Settings** select **Load balancing rules**, click **Add**.
+  * Enter name **(prefix)-db-lbr**.
+    *  Protocol: **TCP**
+    *  Port: **3306**
+    *  Backend port: 3306
+    *  Backend pool: **(prefix)-db-pool(2VMs)**
+    *  Probe: **(prefix)-db-prob(HTTP:3306)**
+    *  Session Persistence: **None**
+    *  Idle timeout (min):**4**
+    *  Floating IP (direct server return): **Disabled**
+    *  Click **Ok**
+
+   ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-22.png)
+
+
  # Add data disk to Web Servers
   * Open the Azure Portal
   * Select the First Web Server
