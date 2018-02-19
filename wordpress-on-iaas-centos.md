@@ -1,4 +1,4 @@
-# POC Scenario 2: Deploying Wordpress on Azure IaaS VMs (CentOS Linux) - HTTP
+# POC Scenario 2: Deploying Wordpress on Azure IaaS VMs (Red Hat Enterprise Linux) - HTTP
 
 ## Table of Contents
 * [Abstract](#abstract)
@@ -50,7 +50,7 @@ After completing the exercises in this module, you will be able to:
 * Access to an authenticated Azure CLI console
 
 # Linux Distribution
-* This PoC release is based on the Centos Linux OS. Minor changes will be necessary for other distributions.
+* This PoC release is based on the RHEL OS. Minor changes will be necessary for other distributions.
 
 # Estimated time to complete this module
 1.5 hour
@@ -63,23 +63,56 @@ After completing the exercises in this module, you will be able to:
  ```
  * Select the correct subscription
  ```bash
- az account set <subscription id>
+ az account set <subscription> id
+ ```
+
+
+# PoC Setup
+ * Create a new Resource Group for this PoC
  ```bash
  az group create -n "FastTrackWordpressPoC" -l "West US"
  ```
-
-# Resource Group Creation
-* Create a new Resource Group for this PoC
-```bash
-az
+ * Create a new Virtual Network with one subnet
+ ```bash
+ az network vnet create --name ftpoc-vnet --resource-group FastTrackWordpressPoC --address-prefix 192.168.0.0/16 --subnet-name frontend --subnet-prefix 192.168.1.0/24
+ ```
+ * Create another subnet
+ ```bash
+ az network vnet subnet create --resource-group FastTrackWordpressPoC --vnet-name ftpoc-vnet --name backend --address-prefix 192.168.2.0/24
+ ```
 
 
 # Virtual Machine Creation
-  * Create 2 VMs for the database
-  
+  * Follow the steps bellow to create the 4 servers for this PoC. Do not use the passwords bellow. If possible, use SSH keys for authentication.
+  * Create an availability set for the database servers
   ```bash
-
+  az vm availability-set create -n ftpoc-database-as -g FastTrackWordpressPoC 
   ```
+
+  * Create the first database VM
+  ```bash
+  az vm create -n ftpoc-database01 -g FastTrackWordpressPoC --image RHEL --admin-username azureadmin --admin-password r3allybadp@ssword --vnet-name ftpoc-vnet --subnet backend --availability-set ftpoc-database-as --private-ip-address 192.168.2.11 --size Standard_DS1_V2 --os-disk-name ftpoc-database01-disk01
+  ```
+
+  * Create the second database VM
+  ```bash
+  az vm create -n ftpoc-database02 -g FastTrackWordpressPoC --image RHEL --admin-username azureadmin --admin-password r3allybadp@ssword --vnet-name ftpoc-vnet --subnet backend --availability-set ftpoc-database-as --private-ip-address 192.168.2.12 --size Standard_DS1_V2 --os-disk-name ftpoc-database02-disk01
+  ```
+  * Create an availability set for the web servers
+  ```bash
+  az vm availability-set create -n ftpoc-web-as -g FastTrackWordpressPoC 
+  ```
+
+   * Create the first WebServer VM
+  ```bash
+  az vm create -n ftpoc-web01 -g FastTrackWordpressPoC --image RHEL --admin-username azureadmin --admin-password r3allybadp@ssword --vnet-name ftpoc-vnet --subnet frontend --availability-set ftpoc-web-as --private-ip-address 192.168.1.11 --size Standard_DS1_V2 --os-disk-name ftpoc-web01-disk01
+  ```
+
+  * Create the second WebServer VM
+  ```bash
+  az vm create -n ftpoc-web02 -g FastTrackWordpressPoC --image RHEL --admin-username azureadmin --admin-password r3allybadp@ssword --vnet-name ftpoc-vnet --subnet frontend --availability-set ftpoc-web-as --private-ip-address 192.168.1.12 --size Standard_DS1_V2 --os-disk-name ftpoc-web02-disk01
+  ```
+
 
   * Select from the marketplace, **Red Hat Enterprise Linux 7.3**
   * Name the 1st VM **(prefix)-db01-vm**
