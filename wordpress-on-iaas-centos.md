@@ -1,4 +1,4 @@
-# POC Scenario 2: Deploying Wordpress on Azure IaaS VMs (Red Hat Enterprise Linux) - HTTP
+# POC Scenario 2: Deploying Wordpress on Azure IaaS VMs (CentOS Linux) - HTTP
 
 ## Table of Contents
 * [Abstract](#abstract)
@@ -46,18 +46,41 @@ After completing the exercises in this module, you will be able to:
 * Adding a Managed Disk to an existing VM and initializing the disk in Linux
 
 # Prerequisites 
-* Complete the "Deploying Website on Azure IaaS VMs (Red Hat Enterprise Linux) - HTTP" as this scenario starts from the completed infrastructure configured on that PoC
-
-[Deploying Website on Azure IaaS VMs (Red Hat Enterprise Linux)](https://github.com/Azure/fta-azurefundamentals/blob/master/iaas-fundamentals/articles/website-on-iaas-http-rhel.md)
+* Access to a Azure Subscription
+* Access to an authenticated Azure CLI console
 
 # Linux Distribution
-* This PoC release is based on the Red Hat Enterprise Linux OS and is expected to work on any distribution of the Red Hat Family. 
+* This PoC release is based on the Centos Linux OS. Minor changes will be necessary for other distributions.
 
 # Estimated time to complete this module
 1.5 hour
 
+# Azure CLI
+ * Open an Azure CLI
+ * Authenticate
+ ```bash
+ az login
+ ```
+ * Select the correct subscription
+ ```bash
+ az account set <subscription id>
+ ```bash
+ az group create -n "FastTrackWordpressPoC" -l "West US"
+ ```
+
+# Resource Group Creation
+* Create a new Resource Group for this PoC
+```bash
+az
+
+
 # Virtual Machine Creation
   * Create 2 VMs for the database
+  
+  ```bash
+
+  ```
+
   * Select from the marketplace, **Red Hat Enterprise Linux 7.3**
   * Name the 1st VM **(prefix)-db01-vm**
   * Name the 2nd VM **(prefix)-db02-vm**
