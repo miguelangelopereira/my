@@ -61,9 +61,8 @@ Linux on Azure covers technical aspects of using Linux on the Microsoft Azure cl
 | Deploying Wordpress on Azure IaaS VMs (RHEL) | GitHub | 120 min | [wordpress-on-iaas-rhel](https://https://github.com/miguelangelopereira/my/blob/master/wordpress-on-iaas-rhel.md) |
 | Create LAMP Stack | Azure Docs | 60 min | [tutorial-lamp-stack](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-lamp-stack) |
 | Create LEMP Stack| Azure Docs | 60 min | [tutorial-lemp-stack](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-lemp-stack) |
-|
 | Create MEAN Stack | Azure Docs | 60 min | [tutorial-mean-stack](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-mean-stack) |
-|
+
 
 
 ## Output to customer
