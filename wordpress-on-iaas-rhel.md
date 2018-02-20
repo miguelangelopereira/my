@@ -1,4 +1,4 @@
-# POC Scenario 2: Deploying Wordpress on Azure IaaS VMs (Red Hat Enterprise Linux) - HTTP
+# POC Scenario: Deploying Wordpress on Azure IaaS VMs (Red Hat Enterprise Linux)
 
 ## Table of Contents
 * [Abstract](#abstract)
@@ -28,7 +28,7 @@ During this module, you will learn about bringing together all the infrastructur
 
 * Two DB servers will host MariaDB with Galera cluster for replication. In a production scenario a minimum of 3 nodes is required to avoid split-brain scenarios.
 * An Azure Internal Load Balancer will distribute the traffic to the DB servers
-* Two Web servers will host Apache. In a production scenario a minimum of 3 nodes is required to avoid split-brain scenarios.
+* Two Web servers will host Apache. 
 * A data disk will be added to each Web Server
 * Gluster storage will be configured on the Web Servers and will replicate the Web Server file content
 * Wordpress will be installed on both Web Servers
