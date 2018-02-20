@@ -25,7 +25,7 @@
 
 During this module, you will learn about bringing together all the infrastructure components to build a Wordpress Website running on Linux and making it scalable, highly available and secure.
 
-![Screenshot](media/website-on-iaas-http-linux/wordpressdiagram-1.png)
+![Screenshot](media/website-on-iaas-http-linux/wordpressdiagram.png)
 
 * Two DB servers will host MariaDB with Galera cluster for replication. In a production scenario a minimum of 3 nodes is required to avoid split-brain scenarios.
 * An Azure Internal Load Balancer will distribute the traffic to the DB servers.
