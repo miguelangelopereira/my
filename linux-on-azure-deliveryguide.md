@@ -52,7 +52,7 @@ Linux on Azure covers technical aspects of using Linux on the Microsoft Azure cl
 | Red Hat On Azure | PowerPoint | 120 min | [Delivery Ready IP\\Linux On Azure\FTA - Scenario - RedHat On Azure](https://nowhere) || 
 | Extensions and Cloudinit | PowerPoint | 60 min | [Delivery Ready IP\\Linux On Azure\FTA - Scenario - Extensions and Cloudinit.pptx](https://nowhere) | | 
 | Directory| PowerPoint | 60 min | [Delivery Ready IP\\Linux On Azure\FTA - Scenario - Directory.pptx](https://nowhere) | | 
-|
+||
 | Lift & Shift| PowerPoint | 120 min | [Delivery Ready IP\\TBD.pptx](https://tbd) | | 
 |
 
@@ -60,11 +60,11 @@ Linux on Azure covers technical aspects of using Linux on the Microsoft Azure cl
 
 | Title         | Source format | Estimated time | Deliver from | Readiness Resources |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| Deploying Wordpress on Azure IaaS VMs (Red Hat Enterprise Linux) | GitHub | 120 min | [https://github.com/miguelangelopereira/my/blob/master/wordpress-on-iaas-rhel.md](https://https://github.com/miguelangelopereira/my/blob/master/wordpress-on-iaas-rhel.md) || 
-| Create LAMP Stack | Azure Docs | 60 min | [https://docs.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-lamp-stack](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-lamp-stack) | | 
-| Create LEMP Stack| Azure Docs | 60 min | [https://docs.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-lemp-stack](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-lemp-stack) | | 
+| Deploying Wordpress on Azure IaaS VMs (Red Hat Enterprise Linux) | GitHub | 120 min | [wordpress-on-iaas-rhel](https://https://github.com/miguelangelopereira/my/blob/master/wordpress-on-iaas-rhel.md) || 
+| Create LAMP Stack | Azure Docs | 60 min | [tutorial-lamp-stack](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-lamp-stack) | | 
+| Create LEMP Stack| Azure Docs | 60 min | [tutorial-lemp-stack](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-lemp-stack) | | 
 |
-| Create MEAN Stack | Azure Docs | 60 min | [https://docs.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-mean-stack](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-mean-stack) | | 
+| Create MEAN Stack | Azure Docs | 60 min | [tutorial-mean-stack](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-mean-stack) | | 
 |
 
 
