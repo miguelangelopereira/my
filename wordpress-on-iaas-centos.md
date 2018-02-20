@@ -178,7 +178,7 @@ CREATE USER 'ftdemodbuser'@'%' IDENTIFIED BY '<New Password>';
 GRANT ALL PRIVILEGES ON *.* TO 'ftdemodbuser'@'%' WITH GRANT OPTION;
 ```
 
-# Load Balancer Creation
+# Create Internal Load Balancer for Database
   * From the Azure CLI Console, create the Load Balancer for Databases
   ```bash
    az network lb create --name ftppoc-db-lb -g FastTrackWordpressPoC --vnet-name ftpoc-vnet --subnet backend --private-ip-address 192.168.2.10 --backend-pool-name ftpoc-dbservers
@@ -189,13 +189,13 @@ GRANT ALL PRIVILEGES ON *.* TO 'ftdemodbuser'@'%' WITH GRANT OPTION;
   az network lb probe create -g FastTrackWordpressPoC --lb-name ftppoc-db-lb -n ftpoc-mysqlprobe --port 3306 --protocol tcp
   ```
 
-* Add Load Balancing Rule
-```bash
-az network lb rule create -g FastTrackWordpressPoC --lb-name ftppoc-db-lb -n ftppoc-mysqlrule --protocol Tcp --frontend-port 3306 --backend-port 3306 --probe-name ftpoc-mysqlprobe --backend-pool-name ftpoc-dbservers
-```
+  * Add Load Balancing Rule
+  ```bash
+  az network lb rule create -g FastTrackWordpressPoC --lb-name ftppoc-db-lb -n ftppoc-mysqlrule --protocol Tcp --frontend-port 3306 --backend-port 3306 --probe-name ftpoc-mysqlprobe --backend-pool-name ftpoc-dbservers
+  ```
 
 
-  # Add the VMs to Load Balancer
+  # Add the Database VMs to Load Balancer
   * Open the Azure Portal, go to the PoC Resource Group and open the Load Balancer object
   * Under **Settings** select **Backend pools**, click **Add**.
   * Enter name **(prefix)-db-pool**.
@@ -208,120 +208,35 @@ az network lb rule create -g FastTrackWordpressPoC --lb-name ftppoc-db-lb -n ftp
   * **Repeat** the step above to also add the IP configuration for the second web server.
   * Click **OK**.
 
- # Add data disk to Web Servers
-  * Open the Azure Portal
-  * Select the First Web Server
-  * Select Disks
-  * Select "+Add Data Disks"
-  * Create a new Managed Disk with 32 Gb with Standard tier
 
-  ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-17.png)
+  # Create External Load Balancer for Web Servers
 
-  * Connect to the server via SSH
-  * Initialize the data disk using the following procedure: [Initialize Data Disk](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-linux)
-
-  * You can mount the new disk in /datadrive
-  * Repeat the steps in the second server
-
-# Configure Gluster Storage Replication
-
-* Execute these steps on both WEB servers
-* Add Gluster software repository by creating a new repo file
-```bash
-nano /etc/yum.repos.d/Gluster.repo
-```
-
-* Add the following configuration to the new file
-```
-[gluster38]
-name=Gluster 3.8
-baseurl=http://mirror.centos.org/centos/7/storage/$basearch/gluster-3.8/
-gpgcheck=0
-enabled=1
-```
-> Note: With a valid Red Hat Enterprise subscription different repositories would be used
-
-* CTRL+O to Save. CTRL+Q to Quit.
-
-* Install gluster storage
-```bash
-yum install -y glusterfs-server
-```
-* Enable the gluster service
-```bash
-systemctl enable glusterd
-```
-
-* Start the gluster service
-```bash
-systemctl start glusterd
-```
-
-* Add the gluster firewall exceptions
-```bash
-firewall-cmd --zone=public --add-port=24007-24008/tcp --permanent
-firewall-cmd --zone=public --add-port=24009/tcp --permanent
-firewall-cmd --zone=public --add-service=nfs --add-service=samba --add-service=samba-client --permanent
-firewall-cmd --zone=public --add-port=111/tcp --add-port=139/tcp --add-port=445/tcp --add-port=965/tcp --add-port=2049/tcp --add-port=38465-38469/tcp --add-port=631/tcp --add-port=111/udp --add-port=963/udp --add-port=49152-49251/tcp --permanent
-firewall-cmd --reload
-```
-
-* Enable http to use gluster in SELinux
-```
-setsebool -P httpd_use_fusefs 1
-```
-
-* On the first server, execute the probe command point to the second server
-```bash
-gluster peer probe 10.0.0.5
-```
-
-* On the second server, execute the probe command point to the first server
-```bash
-gluster peer probe 10.0.0.4
-```
-
-* Create a new gluster volume and start (Execute only or server 1)
-```bash
-gluster volume create volume1 replica 2 transport tcp 10.0.0.4:/datadrive 10.0.0.5:/datadrive force
-gluster volume start volume1
-```
-
-* On the first server, Mount the gluster volume, point to the second server
-```bash
-mkdir /var/www/ftdemo
-mount -t glusterfs 10.0.0.5:/volume1 /var/www/ftdemo
-```
-
-* And, still on the first server, add the following line to ***/etc/fstab*** for automatic mount
-```
-10.0.0.5:/volume1 /var/www/ftdemo glusterfs defaults,_netdev 0 0
-```
-
-* On the second server, Mount the gluster volume, point to the first server
-```bash
-mkdir /var/www/ftdemo
-mount -t glusterfs 10.0.0.4:/volume1 /var/www/ftdemo
-```
-
-* And, still on the second server, add the following line to ***/etc/fstab*** for automatic mount
-```
-10.0.0.4:/volume1 /var/www/ftdemo glusterfs defaults,_netdev 0 0
-```
+az network lb create --name ftppoc-web-lb -g FastTrackWordpressPoC --vnet-name ftpoc-vnet --subnet frontend --backend-pool-name ftpoc-webservers --public-ip-address-allocation Dynamic --public-ip-dns-name ftpocweb.westus.cloudapp.azure.com
 
 
+# Azure Files
+az storage account create --sku Standard_LRS -g FastTrackWordpressPoC --name ftpoccontentstorage01
+az storage share create --name webcontent --account ftpoccontentstorage01
+
+yum install cifs-utils
+
+mkdir /var/webcontent
+
+sudo mount -t cifs //ftpoccontentstorage01.file.core.windows.net/webcontent /var/webcontent -o vers=3.0,username=ftpoccontentstorage01,password=aMC3E7hmFA2XpZ/Ccze+qyeoS9UNMrD5a1+yG6xLrrs48v0SwFoPpdXFxT67le7t37+/+u5+sLV/Dxn1ZCvlKA==,dir_mode=0777,file_mode=0777,sec=ntlmssp
+
+ 
 
 # Reconfigure Apache
 
 * Execute the following steps on both Web Servers
 * Install additional packages for apache
 ```bash
-yum install -y php php-common php-mysql php-gd php-xml php-mbstring php-mcrypt
+sudo yum install -y php php-common php-mysql php-gd php-xml php-mbstring php-mcrypt -y
 ```
 
-* Enable selinux access to database
+* Disable selinux (do not do this in production scenarios)
 ```bash
-setsebool -P httpd_can_network_connect_db=1
+setenforce 0
 ```
 
 * Create a new apache configuration file
@@ -332,15 +247,26 @@ nano /etc/httpd/conf.d/ftdemo.conf
 * Include de following configuration on the new file
 ```
 <VirtualHost *:80>
-    ServerName <DNS NAME>.westus2.cloudapp.azure.com
-    DocumentRoot /var/www/ftdemo
+    ServerName localhost
+    DocumentRoot /var/webcontent
 </VirtualHost>
+
+<Directory /var/webcontent>
+    AllowOverride None
+    Require all granted
+</Directory>
 ```
 * CTRL+O to Save. CTRL+Q to Quit.
 
 * Restart apache
 ```bash
 systemctl restart httpd
+```
+
+* Open Firewall ports
+```
+firewall-cmd --zone=public --add-port=80/tcp --permanent
+firewall-cmd --reload
 ```
 
 # Prepare Wordpress Installation 
@@ -351,16 +277,16 @@ systemctl restart httpd
 cd /tmp
 wget http://wordpress.org/latest.tar.gz
 tar xzf latest.tar.gz
-mv wordpress/* /var/www/ftdemo
+mv wordpress/* /var/webcontent
 ```
-* Give permissions to apache
+* Give permissions to apache (is this needed??)
 ```
-chown -R apache:apache /var/www/ftdemo
+chown -R apache:apache /var/webcontent
 ```
 
 * Open the wordpress configuration file
 ```
-cd /var/www/ftdemo
+cd /var/webcontent
 cp wp-config-sample.php wp-config.php
 nano wp-config.php
 ```
@@ -375,7 +301,7 @@ define('DB_USER', 'ftdemodbuser');
 /** MySQL database password */
 define('DB_PASSWORD', '<Password>');
 /** MySQL hostname */
-define('DB_HOST', '<Azure Internal Load Balancer IP>');
+define('DB_HOST', '192.168.2.10');
 ```
 
 # Install wordpress
