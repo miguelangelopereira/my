@@ -27,12 +27,11 @@ During this module, you will learn about bringing together all the infrastructur
 ![Screenshot](media/website-on-iaas-http-linux/wordpressdiagram-1.png)
 
 * Two DB servers will host MariaDB with Galera cluster for replication. In a production scenario a minimum of 3 nodes is required to avoid split-brain scenarios.
-* An Azure Internal Load Balancer will distribute the traffic to the DB servers
-* Two Web servers will host Apache. 
-* A data disk will be added to each Web Server
-* Gluster storage will be configured on the Web Servers and will replicate the Web Server file content
-* Wordpress will be installed on both Web Servers
-* An Azure External Load Balancer will distribute the traffice to the Web servers
+* An Azure Internal Load Balancer will distribute the traffic to the DB servers.
+* Two Web servers will host Apache.
+* The two web servers will connect to one Azure Storage Account via File Services. This storage will mantain the web content consistent across the web server farm.
+* Wordpress will be installed on both Web Servers.
+* An Azure External Load Balancer will distribute the traffice to the Web servers.
 
 > Note: This document describes the steps for a proof of concept. Additional steps may be required for a production environment
 
@@ -42,8 +41,7 @@ After completing the exercises in this module, you will be able to:
 * Create an Availability Set
 * Create and configure a Load Balancer
 * Configure a Highly Available MariaDB cluster with Azure Load Balancer
-* Configure a Highly Available Wordpress site with storage replication (gluster)
-* Adding a Managed Disk to an existing VM and initializing the disk in Linux
+* Configure a Highly Available Wordpress site
 
 # Prerequisites 
 * Access to a Azure Subscription
@@ -53,7 +51,7 @@ After completing the exercises in this module, you will be able to:
 * This PoC release is based on the RHEL OS. Minor changes will be necessary for other distributions.
 
 # Estimated time to complete this module
-1.5 hour
+2 hours
 
 # Azure CLI
  * Open an Azure CLI
