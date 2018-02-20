@@ -10,7 +10,7 @@
 * [PoC Setup](#poc-setup)
 * [Virtual Machine Creation](#virtual-machine-creation)
 * [Connect to the Virtual Machine](#connect-to-the-virtual-machine)
-* [Install MariaDB and Galera Cluster](#Install-MariaDB-and-Galera-Cluster)
+* [Install MariaDB and Galera Cluster](#install-mariadb-and-galera-cluster)
 * [Create Internal Load Balancer for Database](#create-internal-load-balancer-for-database)
 * [Create External Load Balancer for Web Servers](#create-external-load-balancer-for-web-servers)
 * [Create shared storage for Web Content](#create-shared-storage-for-web-content)
