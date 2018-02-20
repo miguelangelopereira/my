@@ -42,7 +42,7 @@ Linux on Azure covers technical aspects of using Linux on the Microsoft Azure cl
 
 | Title         | Source format | Estimated time | Deliver from | Readiness Resources |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| Linux On Azure | PowerPoint | 120 min | [Delivery Ready IP\\Linux On Azure\FTA - Linux On Azure.pptx](hhttps://microsoft.sharepoint.com/teams/FastTrackforAzureWimDemo/_layouts/15/WopiFrame2.aspx?action=edit&sourcedoc={1D6154BD-089D-407F-8BE3-87CF7C04A4A9}) | | 
+| Linux On Azure | PowerPoint | 120 min | [Delivery Ready IP\\Linux On Azure\FTA - Linux On Azure.pptx](https://microsoft.sharepoint.com/teams/FastTrackforAzureWimDemo/_layouts/15/WopiFrame2.aspx?action=edit&sourcedoc={1D6154BD-089D-407F-8BE3-87CF7C04A4A9}) | | 
 
 
 * Additional scenarios are available and can be decided with the costumer. Some of these scenarios point to other offerings that were extented to include Linux.
