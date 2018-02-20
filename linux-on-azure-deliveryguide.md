@@ -52,14 +52,13 @@ Linux on Azure covers technical aspects of using Linux on the Microsoft Azure cl
 | Red Hat On Azure | PowerPoint | 120 min | [Delivery Ready IP\\Linux On Azure\FTA - Scenario - RedHat On Azure](https://nowhere) || 
 | Extensions and Cloudinit | PowerPoint | 60 min | [Delivery Ready IP\\Linux On Azure\FTA - Scenario - Extensions and Cloudinit.pptx](https://nowhere) | | 
 | Directory| PowerPoint | 60 min | [Delivery Ready IP\\Linux On Azure\FTA - Scenario - Directory.pptx](https://nowhere) ||
-| Lift & Shift| PowerPoint | 120 min | [Delivery Ready IP\\TBD.pptx](https://tbd) | | 
-|
+| Lift & Shift| PowerPoint | 120 min | [Delivery Ready IP\\TBD.pptx](https://tbd) ||
 
 * After the session deliveries. The customer will be able to choose from the following different PoCs:
 
 | Title         | Source format | Estimated time | Deliver from | 
 | ------------- | ------------- | ------------- | ------------- | 
-| Deploying Wordpress on Azure IaaS VMs (Red Hat Enterprise Linux) | GitHub | 120 min | [wordpress-on-iaas-rhel](https://https://github.com/miguelangelopereira/my/blob/master/wordpress-on-iaas-rhel.md) |
+| Deploying Wordpress on Azure IaaS VMs (RHEL) | GitHub | 120 min | [wordpress-on-iaas-rhel](https://https://github.com/miguelangelopereira/my/blob/master/wordpress-on-iaas-rhel.md) |
 | Create LAMP Stack | Azure Docs | 60 min | [tutorial-lamp-stack](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-lamp-stack) |
 | Create LEMP Stack| Azure Docs | 60 min | [tutorial-lemp-stack](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-lemp-stack) |
 |
