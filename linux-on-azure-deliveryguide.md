@@ -42,16 +42,16 @@ Linux on Azure covers technical aspects of using Linux on the Microsoft Azure cl
 
 | Title         | Source format | Estimated time | Deliver from | Readiness Resources |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| Linux On Azure | PowerPoint | 120 min | [Delivery Ready IP\\Linux On Azure\FTA - Linux On Azure.pptx](https://teams.microsoft.com/_#/pptx/viewer/teams/https%3A~2F~2Fmicrosoft.sharepoint.com~2Fteams~2FFastTrackforAzureWimDemo~2FShared%20Documents~2FRed%20Hat%20on%20IaaS~2FFTA%20-%20Linux%20On%20Azure.pptx?threadId=19%3A742e48f2aa63490d8716607977f4c08d%40thread.skype&baseUrl=https%3A~2F~2Fmicrosoft.sharepoint.com~2Fteams~2FFastTrackforAzureWimDemo&fileId=1D6154BD-089D-407F-8BE3-87CF7C04A4A9&ctx=files&viewerAction=view) | | 
+| Linux On Azure | PowerPoint | 120 min | [Delivery Ready IP\\Linux On Azure\FTA - Linux On Azure.pptx](hhttps://microsoft.sharepoint.com/teams/FastTrackforAzureWimDemo/_layouts/15/WopiFrame2.aspx?action=edit&sourcedoc={1D6154BD-089D-407F-8BE3-87CF7C04A4A9}) | | 
 
 
 * Additional scenarios are available and can be decided with the costumer. Some of these scenarios point to other offerings that were extented to include Linux.
 
 | Title         | Source format | Estimated time | Deliver from | Readiness Resources |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| Red Hat On Azure | PowerPoint | 120 min | [Delivery Ready IP\\Linux On Azure\FTA - Scenario - RedHat On Azure](https://teams.microsoft.com/_#/pptx/viewer/teams/https%3A~2F~2Fmicrosoft.sharepoint.com~2Fteams~2FFastTrackforAzureWimDemo~2FShared%20Documents~2FRed%20Hat%20on%20IaaS~2FFTA%20-%20Linux%20On%20Azure%20-%20Scenario%20-%20RHEL.pptx?threadId=19%3A742e48f2aa63490d8716607977f4c08d%40thread.skype&baseUrl=https%3A~2F~2Fmicrosoft.sharepoint.com~2Fteams~2FFastTrackforAzureWimDemo&fileId=8FC2BD6A-809D-442E-9EF7-A4DA52D8FB36&ctx=files&viewerAction=view) || 
-| Extensions and Cloudinit | PowerPoint | 60 min | [Delivery Ready IP\\Linux On Azure\FTA - Scenario - Extensions and Cloudinit.pptx](https://teams.microsoft.com/_#/pptx/viewer/teams/https%3A~2F~2Fmicrosoft.sharepoint.com~2Fteams~2FFastTrackforAzureWimDemo~2FShared%20Documents~2FRed%20Hat%20on%20IaaS~2FFTA%20-%20Linux%20On%20Azure%20-%20Scenario%20-%20Extensions%20and%20Cloudinit.pptx?threadId=19%3A742e48f2aa63490d8716607977f4c08d%40thread.skype&baseUrl=https%3A~2F~2Fmicrosoft.sharepoint.com~2Fteams~2FFastTrackforAzureWimDemo&fileId=4BFB6EA2-2A9A-474F-A9DD-CE8250047FA1&ctx=files&viewerAction=view) | | 
-| Directory| PowerPoint | 60 min | [Delivery Ready IP\\Linux On Azure\FTA - Scenario - Directory.pptx](https://teams.microsoft.com/_#/pptx/viewer/teams/https%3A~2F~2Fmicrosoft.sharepoint.com~2Fteams~2FFastTrackforAzureWimDemo~2FShared%20Documents~2FRed%20Hat%20on%20IaaS~2FFTA%20-%20Linux%20On%20Azure%20-%20Scenario%20-%20Directory.pptx?threadId=19%3A742e48f2aa63490d8716607977f4c08d%40thread.skype&baseUrl=https%3A~2F~2Fmicrosoft.sharepoint.com~2Fteams~2FFastTrackforAzureWimDemo&fileId=9FB6A7AF-7402-4839-A937-9BABD6B065BD&ctx=files&viewerAction=view) ||
+| Red Hat On Azure | PowerPoint | 120 min | [Delivery Ready IP\\Linux On Azure\FTA - Scenario - RedHat On Azure](https://microsoft.sharepoint.com/teams/FastTrackforAzureWimDemo/_layouts/15/WopiFrame2.aspx?action=edit&sourcedoc={8FC2BD6A-809D-442E-9EF7-A4DA52D8FB36}) || 
+| Extensions and Cloudinit | PowerPoint | 60 min | [Delivery Ready IP\\Linux On Azure\FTA - Scenario - Extensions and Cloudinit.pptx](https://microsoft.sharepoint.com/teams/FastTrackforAzureWimDemo/_layouts/15/WopiFrame2.aspx?action=edit&sourcedoc={4BFB6EA2-2A9A-474F-A9DD-CE8250047FA1}) | | 
+| Directory| PowerPoint | 60 min | [Delivery Ready IP\\Linux On Azure\FTA - Scenario - Directory.pptx](https://microsoft.sharepoint.com/teams/FastTrackforAzureWimDemo/_layouts/15/WopiFrame2.aspx?action=edit&sourcedoc={9FB6A7AF-7402-4839-A937-9BABD6B065BD}) ||
 | Lift & Shift| PowerPoint | 120 min | [Delivery Ready IP\\TBD.pptx](https://tbd) ||
 
 * After the session deliveries. The customer will be able to choose from the following different PoCs:
