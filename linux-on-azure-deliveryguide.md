@@ -26,6 +26,7 @@ Linux on Azure covers technical aspects of using Linux on the Microsoft Azure cl
 * A Microsoft Azure subscription (with Owner/Contributor access)
 * Internet connection (RDP/SSH port open to external IP addresses)
 * One person per session with the ability to share screen over skype meeting
+* The customer should have been through IaaS Fundamentals before this delivery
 
 
 ## Sessions
