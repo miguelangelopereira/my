@@ -274,15 +274,15 @@ GRANT ALL PRIVILEGES ON *.* TO 'ftdemodbuser'@'%' WITH GRANT OPTION;
   ```
   * [SSH WEB01,WEB02] Enable Apache service
   ```bash
-  systemctl enable httpd.service
+  sudo systemctl enable httpd.service
   ```
 
 
 * [SSH WEB01,WEB02] Confire SELinux to allow the Web Server to access files on CIFS and to access database
 ```bash
-setsebool -P httpd_use_cifs 1
-setsebool -P httpd_can_network_connect 1
-setsebool -P httpd_can_network_connect_db  1
+sudo setsebool -P httpd_use_cifs 1
+sudo setsebool -P httpd_can_network_connect 1
+sudo setsebool -P httpd_can_network_connect_db  1
 
 ```
 
