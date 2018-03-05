@@ -282,7 +282,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'ftdemodbuser'@'%' WITH GRANT OPTION;
 ```bash
 sudo setsebool -P httpd_use_cifs 1
 sudo setsebool -P httpd_can_network_connect 1
-sudo setsebool -P httpd_can_network_connect_db  1
+sudo setsebool -P httpd_can_network_connect_db 1
 
 ```
 
