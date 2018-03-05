@@ -62,7 +62,7 @@ After completing the exercises in this module, you will be able to:
  ```
  * [Azure CLI] Select the correct subscription
  ```bash
- az account set <subscriptionid>
+ az account set -s <subscriptionid>
  ```
 
 
@@ -90,12 +90,12 @@ After completing the exercises in this module, you will be able to:
 
   * [Azure CLI] Create the first database VM
   ```bash
-  az vm create -n ftpoc-database01 -g FastTrackWordpressPoC --image RHEL --admin-username azureadmin --admin-password r3allybadp@ssword --vnet-name ftpoc-vnet --subnet backend --availability-set ftpoc-database-as --private-ip-address 192.168.2.11 --size Standard_DS1_V2 --os-disk-name ftpoc-database01-disk01
+  az vm create -n ftpoc-database01 -g FastTrackWordpressPoC --image RHEL --admin-username azureadmin --admin-password r3allybadp@ssword --vnet-name ftpoc-vnet --subnet backend --availability-set ftpoc-database-as --private-ip-address 192.168.2.11 --size Standard_DS1_V2 --os-disk-name ftpoc-database01-disk01 --no-wait
   ```
 
   * [Azure CLI] Create the second database VM
   ```bash
-  az vm create -n ftpoc-database02 -g FastTrackWordpressPoC --image RHEL --admin-username azureadmin --admin-password r3allybadp@ssword --vnet-name ftpoc-vnet --subnet backend --availability-set ftpoc-database-as --private-ip-address 192.168.2.12 --size Standard_DS1_V2 --os-disk-name ftpoc-database02-disk01
+  az vm create -n ftpoc-database02 -g FastTrackWordpressPoC --image RHEL --admin-username azureadmin --admin-password r3allybadp@ssword --vnet-name ftpoc-vnet --subnet backend --availability-set ftpoc-database-as --private-ip-address 192.168.2.12 --size Standard_DS1_V2 --os-disk-name ftpoc-database02-disk01 --no-wait
   ```
   * [Azure CLI] Create an availability set for the web servers
   ```bash
@@ -104,12 +104,12 @@ After completing the exercises in this module, you will be able to:
 
    * [Azure CLI] Create the first WebServer VM
   ```bash
-  az vm create -n ftpoc-web01 -g FastTrackWordpressPoC --image RHEL --admin-username azureadmin --admin-password r3allybadp@ssword --vnet-name ftpoc-vnet --subnet frontend --availability-set ftpoc-web-as --private-ip-address 192.168.1.11 --size Standard_DS1_V2 --os-disk-name ftpoc-web01-disk01
+  az vm create -n ftpoc-web01 -g FastTrackWordpressPoC --image RHEL --admin-username azureadmin --admin-password r3allybadp@ssword --vnet-name ftpoc-vnet --subnet frontend --availability-set ftpoc-web-as --private-ip-address 192.168.1.11 --size Standard_DS1_V2 --os-disk-name ftpoc-web01-disk01 --no-wait
   ```
 
   * [Azure CLI] Create the second WebServer VM
   ```bash
-  az vm create -n ftpoc-web02 -g FastTrackWordpressPoC --image RHEL --admin-username azureadmin --admin-password r3allybadp@ssword --vnet-name ftpoc-vnet --subnet frontend --availability-set ftpoc-web-as --private-ip-address 192.168.1.12 --size Standard_DS1_V2 --os-disk-name ftpoc-web02-disk01
+  az vm create -n ftpoc-web02 -g FastTrackWordpressPoC --image RHEL --admin-username azureadmin --admin-password r3allybadp@ssword --vnet-name ftpoc-vnet --subnet frontend --availability-set ftpoc-web-as --private-ip-address 192.168.1.12 --size Standard_DS1_V2 --os-disk-name ftpoc-web02-disk01 --no-wait
   ```
 
 # Connect to The Virtual Machine
@@ -207,7 +207,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'ftdemodbuser'@'%' WITH GRANT OPTION;
 
   * [Azure CLI] Create a public IP for the website. Note that the DNS should be unique.
   ```bash
-  az network public-ip create --name ftpoc-web-pip -g FastTrackWordpressPoC --dns-name ftpocweb.westus.cloudapp.azure.com --allocation-method Dynamic
+  az network public-ip create --name ftpoc-web-pip -g FastTrackWordpressPoC --dns-name ftpocweb --allocation-method Dynamic
   ```
  
   * [Azure CLI] Create the external load balancer
@@ -270,10 +270,18 @@ GRANT ALL PRIVILEGES ON *.* TO 'ftdemodbuser'@'%' WITH GRANT OPTION;
   ```bash
   sudo yum install -y php php-common php-mysql php-gd php-xml php-mbstring php-mcrypt -y
   ```
+  * [SSH WEB01,WEB02] Enable Apache service
+  ```bash
+  systemctl enable httpd.service
+  ```
 
-* [SSH WEB01,WEB02] Disable selinux (do not do this in production scenarios)
+
+* [SSH WEB01,WEB02] Confire SELinux to allow the Web Server to access files on CIFS and to access database
 ```bash
-sudo setenforce 0
+setsebool -P httpd_use_cifs 1
+setsebool -P httpd_can_network_connect 1
+setsebool -P httpd_can_network_connect_db  1
+
 ```
 
 * [SSH WEB01,WEB02] Create a new apache configuration file
@@ -326,10 +334,6 @@ wget http://wordpress.org/latest.tar.gz
 tar xzf latest.tar.gz
 sudo mv wordpress/* /var/webcontent
 ```
-* Give permissions to apache (is this needed??)
-```
-chown -R apache:apache /var/webcontent
-```
 
 * [SSH WEB01] Open the wordpress configuration file
 ```
@@ -366,6 +370,6 @@ define('DB_HOST', '192.168.2.10');
 
 
 # Testing
- * [Browser] Browse to the load balancer public IP dns **http://(prefix).westus2.cloudapp.azure.com/**
+ * [Browser] Browse to the load balancer public IP dns **http://(prefix).westus.cloudapp.azure.com/**
  ![Screenshot](media/website-on-iaas-http-linux/linuxpoc-25.png)
 
