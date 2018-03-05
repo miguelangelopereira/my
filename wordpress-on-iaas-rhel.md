@@ -211,7 +211,9 @@ GRANT ALL PRIVILEGES ON *.* TO 'ftdemodbuser'@'%' WITH GRANT OPTION;
   ```
  
   * [Azure CLI] Create the external load balancer
+  ```bash
   az network lb create --name ftppoc-web-lb -g FastTrackWordpressPoC --backend-pool-name ftpoc-webservers --public-ip-address ftpoc-web-pip
+  ```
 
   * [Azure CLI] Add the Health Probe to the Load Balancer
   ```bash
